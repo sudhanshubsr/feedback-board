@@ -1,6 +1,6 @@
 import React from 'react'
 
-const Popup = ({setShow,children, title}) => {
+const Popup = ({setShow,children, title, narrow}) => {
   return (
     // ? Change this as click outside to close
 
@@ -13,7 +13,7 @@ const Popup = ({setShow,children, title}) => {
 
     </button>
       <div className='w-full md:mt-40'>
-          <div className='bg-white md:max-w-2xl md:mx-auto md:rounded-lg overflow-hidden' onClick={(e)=>e.stopPropagation()}>
+          <div className={(narrow ? "md:max-w-md" : "md:max-w-2xl")+' bg-white md:mx-auto md:rounded-lg overflow-hidden'} onClick={(e)=>e.stopPropagation()}>
             <div className="relative min-h-[40px] md:min-h-0">
               <button className="absolute top-4 left-8 md:hidden text-gray-600 cursor-pointer"
               onClick={()=>setShow(false)} 
