@@ -1,16 +1,36 @@
 import React, { useState,useCallback } from 'react';
 import Popup from './Popup';
+import {signIn} from "next-auth/react"
 
-const FeedbackItem = ({ title, description, openShow, votesCount }) => {
-  const isLoggedin = false;
-  const [showLoginPopup, setShowLoginPopup] = useState(false);
 
+const FeedbackItem = ({ title, description, openShow, votesCount, id}) => {
+  
+  const isLoggedin = false; // Indicates whether the user is logged in or not
+  const [showLoginPopup, setShowLoginPopup] = useState(false); // State variable to control the visibility of the login popup
+
+
+  // Callback function to handle the vote click event
   const handleVoteClick = useCallback((e) => {
     e.preventDefault();
     if (!isLoggedin) {
-      setShowLoginPopup(true);
+      localStorage.setItem("feedback-id to vote", id)
+      setShowLoginPopup(true); // Show the login popup if the user is not logged in
     }
-  }, [isLoggedin, setShowLoginPopup]);
+  }, [isLoggedin, setShowLoginPopup, id]);
+
+  // Function to handle Google login
+  const handleGoogleLogin = async (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+    await signIn("google"); // Perform Google login using the next-auth library
+  };
+
+  // Function to handle Github login
+  const handleGithubLogin = (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+    signIn("github"); // Perform Github login using the next-auth library
+  };
 
   return (
     <div className="flex gap-8 items-center my-8 b">
@@ -24,8 +44,8 @@ const FeedbackItem = ({ title, description, openShow, votesCount }) => {
           <div>
             <Popup narrow setShow={setShowLoginPopup} title={"Login to Confirm Your Vote"}>
               <div className="flex gap-4 justify-center p-2">
-                <button className="bg-blue-600 text-white rounded-md py-1 px-3">Login with Google</button>
-                <button className="bg-blue-600 text-white rounded-md py-1 px-3">Login with Github</button>
+                <button onClick={handleGoogleLogin} className="bg-blue-600 text-white rounded-md py-1 px-3">Login with Google</button>
+                <button onClick={handleGithubLogin} className="bg-blue-600 text-white rounded-md py-1 px-3">Login with Github</button>
               </div>
             </Popup>
           </div>
