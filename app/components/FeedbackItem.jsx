@@ -3,7 +3,7 @@ import React from 'react'
 const FeedbackItem = ({title, description, openShow,votesCount}) => {
   return (
     <div  className="flex gap-8 items-center my-8 b">
-          <a href='' onClick={(e)=>{e.preventDefault(); openShow();}}>
+          <a href='' onClick={(e)=>{e.preventDefault(); openShow();}} className='flex-grow'>
             <h2 className='font-bold'>{title}</h2>
             <p className="text-gray-600 text-sm">
               {description}
@@ -25,7 +25,7 @@ const FeedbackItem = ({title, description, openShow,votesCount}) => {
                   d="M4.5 10.5 12 3m0 0 7.5 7.5M12 3v18"
                 />
               </svg>
-              {votesCount}
+              {votesCount || '0'}
             </button>
           </div>
         </div>

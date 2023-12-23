@@ -1,6 +1,6 @@
 'use client';
-import { useState } from "react";
-
+import { useEffect, useState } from "react";
+import axios from "axios";
 import FeedbackItem from "./components/FeedbackItem";
 import FeedbackModal from "./components/FeedbackModal";
 import FeedbackItemModal from "./components/FeedbackItemModal";
@@ -10,6 +10,9 @@ import Button from "./components/Button";
 export default function Home() {
   const [showFeedbackModalForm, setShowFeedbackModalForm] = useState(false)
   const [openFeedbackModal, setopenFeedbackModal] = useState(false)
+
+  const [feedbacks, setFeedbacks] = useState([])
+
   const openFeedbackModalForm = ()=>{
     setShowFeedbackModalForm(true);    
   }
@@ -17,26 +20,37 @@ export default function Home() {
     setopenFeedbackModal(feedback);
   }
 
-  const Feedbacks = [
-    { 
-      id: 1,
-      title: 'Please post more Videos1',
-      description: 'I would like to see more videos on the topic of React and NextJS',
-      votesCount: 10,
-    },
-    {
-      id: 2,
-      title: 'Please post more Videos2',
-      description: 'I would like to see more videos on the topic of React and NextJS',
-      votesCount: 14,
-    },
-    {
-      id: 3,
-      title: 'Please post more Videos3',
-      description: 'I would like to see more videos on the topic of React and NextJS',
-      votesCount: 13,
-    }
-  ]
+
+  const getFeedbacks = async ()=>{
+    const res = await axios.get('/api/feedback')
+    setFeedbacks(res.data)
+  }
+  useEffect(()=>{
+    getFeedbacks()
+  },[])
+
+
+
+  // const Feedbacks = [
+  //   { 
+  //     id: 1,
+  //     title: 'Please post more Videos1',
+  //     description: 'I would like to see more videos on the topic of React and NextJS',
+  //     votesCount: 10,
+  //   },
+  //   {
+  //     id: 2,
+  //     title: 'Please post more Videos2',
+  //     description: 'I would like to see more videos on the topic of React and NextJS',
+  //     votesCount: 14,
+  //   },
+  //   {
+  //     id: 3,
+  //     title: 'Please post more Videos3',
+  //     description: 'I would like to see more videos on the topic of React and NextJS',
+  //     votesCount: 13,
+  //   }
+  // ]
 
 
   return (
@@ -55,7 +69,7 @@ export default function Home() {
       </div>
 
       <div className="px-8">
-        {Feedbacks.map((feedback)=>{
+        {feedbacks.map((feedback)=>{
           return <FeedbackItem key={feedback.id} openShow={()=>openFeedbackItem(feedback)} {...feedback} />
 
         })}

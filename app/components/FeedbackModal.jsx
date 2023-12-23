@@ -16,7 +16,7 @@ export default function FeedbackModal({setShow}){
 
   const handleCreatePostClick = (e) => {
     e.preventDefault()
-    axios.post('/api/v1/feedback',{title,description})
+    axios.post('/api/feedback',{title,description, uploads})
     .then(()=>{
       setShow(false)
       console.log("feedback successfully created")
@@ -33,7 +33,7 @@ export default function FeedbackModal({setShow}){
       files.forEach((file)=>{
         uploadedFiles.append('file',file)
       })
-      await axios.post('/api/v1/upload',uploadedFiles)
+      await axios.post('/api/upload',uploadedFiles)
       .then((res)=>{
         setUploads([...uploads,...res.data]) 
         // setUploads(res.data)
@@ -47,7 +47,7 @@ export default function FeedbackModal({setShow}){
 
   const handleRemoveFileClick = (link,e)=>{
     e.preventDefault()
-    // axios.delete('/api/v1/upload',{data:{link}})
+    // axios.delete('/api/upload',{data:{link}})
     setUploads(uploads.filter((item)=>item !== link))
   }
 
