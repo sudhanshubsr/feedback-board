@@ -1,10 +1,10 @@
 
-import Prisma from "../../../prisma/index.js";
+import prisma from "../../../prisma/index.js";
 
 export async function POST(request) {
   const jsonbody = await request.json();
   const { title, description, uploads } = jsonbody;
-  await Prisma.feedback.create({
+  await prisma.feedback.create({
     data: {
       title,
       description,
@@ -21,7 +21,7 @@ export async function POST(request) {
 }
 
 export async function GET(){
-  const feedbacks = await Prisma.feedback.findMany();
+  const feedbacks = await prisma.feedback.findMany();
   return Response.json(feedbacks);
 }
 

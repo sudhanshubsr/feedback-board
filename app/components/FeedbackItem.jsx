@@ -1,22 +1,22 @@
 import React, { useState,useCallback } from 'react';
 import Popup from './Popup';
 import {signIn} from "next-auth/react"
-
+import { useSession } from 'next-auth/react';
 
 const FeedbackItem = ({ title, description, openShow, votesCount, id}) => {
   
-  const isLoggedin = false; // Indicates whether the user is logged in or not
+  
   const [showLoginPopup, setShowLoginPopup] = useState(false); // State variable to control the visibility of the login popup
-
+  const {data:session} = useSession()
 
   // Callback function to handle the vote click event
   const handleVoteClick = useCallback((e) => {
     e.preventDefault();
-    if (!isLoggedin) {
+    if (!session) {
       localStorage.setItem("feedback-id to vote", id)
       setShowLoginPopup(true); // Show the login popup if the user is not logged in
     }
-  }, [isLoggedin, setShowLoginPopup, id]);
+  }, [session,setShowLoginPopup, id]);
 
   // Function to handle Google login
   const handleGoogleLogin = async (e) => {

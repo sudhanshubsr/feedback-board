@@ -38,7 +38,12 @@ export default function Board() {
     if(session?.user?.email){
       const feedbackId = localStorage.getItem("feedback-id to vote")
       if(feedbackId){
-        alert(feedbackId)
+        axios.post('/api/vote', {feedbackId})
+        .then((res)=>{
+          console.log(res.data)
+          localStorage.removeItem("feedback-id to vote")
+        })
+
       }
     }
   },[session?.user?.email]) // [session?.user?.email] is a dependency array
