@@ -1,22 +1,37 @@
 import React, { useState,useCallback } from 'react';
 import Popup from './Popup';
 import {signIn} from "next-auth/react"
+import Button from './Button';
 import { useSession } from 'next-auth/react';
+import axios from 'axios';
+import { MoonLoader } from 'react-spinners';
 
-const FeedbackItem = ({ title, description, openShow, votesCount, id}) => {
+const FeedbackItem = ({ title, description, openShow, votes, id, onVoteChange, parentLoadingVotes=true}) => {
   
   
   const [showLoginPopup, setShowLoginPopup] = useState(false); // State variable to control the visibility of the login popup
+  const [isVotesLoading, setIsVotesLoading] = useState(false); // State variable to check if the votes are loaded from the database
   const {data:session} = useSession()
-
+  const isLoggedin = !!session?.user?.email // Check if the user is logged in
   // Callback function to handle the vote click event
-  const handleVoteClick = useCallback((e) => {
+  const handleVoteClick =async (e) => {
     e.preventDefault();
-    if (!session) {
+    if (!isLoggedin) {
       localStorage.setItem("feedback-id to vote", id)
       setShowLoginPopup(true); // Show the login popup if the user is not logged in
     }
-  }, [session,setShowLoginPopup, id]);
+    else{
+      try{
+        setIsVotesLoading(true)
+        await axios.post('/api/vote',{feedbackId: id})
+        await onVoteChange()
+        setIsVotesLoading(false)
+      }
+      catch(err){
+        console.log(err)
+      }
+    }
+  };
 
   // Function to handle Google login
   const handleGoogleLogin = async (e) => {
@@ -31,6 +46,9 @@ const FeedbackItem = ({ title, description, openShow, votesCount, id}) => {
     e.stopPropagation();
     signIn("github"); // Perform Github login using the next-auth library
   };
+
+  const isVoted = !!votes?.some(vote => vote.userEmail === session?.user?.email)
+  
 
   return (
     <div className="flex gap-8 items-center my-8 b">
@@ -50,20 +68,40 @@ const FeedbackItem = ({ title, description, openShow, votesCount, id}) => {
             </Popup>
           </div>
         )}
-        <button onClick={handleVoteClick} className="shadow-sm shadow-gray-200 border rounded-md py-1 px-3 flex items-center gap-2">
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            fill="none"
-            viewBox="0 0 24 24"
-            strokeWidth={2}
-            stroke="currentColor"
-            dataslot="icon"
-            className="w-4 h-4"
-          >
-            <path strokeLinecap="round" strokeLinejoin="round" d="M4.5 10.5 12 3m0 0 7.5 7.5M12 3v18" />
-          </svg>
-          {votesCount || '0'}
-        </button>
+
+          
+          <Button {...(isVoted ? { primary: true } : {})} onClick={handleVoteClick} className="shadow-md border ">
+          {!isVotesLoading && (
+            <>
+            {!isVoted && (
+              <svg
+              xmlns="http://www.w3.org/2000/svg"
+              fill="none"
+              viewBox="0 0 24 24"
+              strokeWidth={3.5}
+              stroke="currentColor"
+              dataslot="icon"
+              className="w-4 h-4" 
+            >
+              <path strokeLinecap="round" strokeLinejoin="round" d="M4.5 10.5 12 3m0 0 7.5 7.5M12 3v18" />
+            </svg>
+            )}
+            {isVoted && (
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={3.5} stroke="currentColor" className="w-4 h-4">
+              <path strokeLinecap="round" strokeLinejoin="round" d="M19.5 13.5 12 21m0 0-7.5-7.5M12 21V3" />
+            </svg>
+            )}
+              {votes?.length || 0}
+            </> 
+              
+          )}
+          {isVotesLoading && (
+            <MoonLoader color="#000000" loading={true} size={18} />
+          )}
+          </Button>
+      
+        
+        
       </div>
     </div>
   );

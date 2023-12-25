@@ -1,14 +1,16 @@
-import { useEffect, useState } from "react";
+
 import axios from "axios";
-import FeedbackItem from "./FeedbackItem"
-import FeedbackModal from "./FeedbackModal";
-import FeedbackItemModal from "./FeedbackItemModal";
-import Button from "./Button";
 import { useSession } from "next-auth/react";
+import { useCallback, useEffect, useState } from "react";
+import Button from "./Button";
+import FeedbackItem from "./FeedbackItem";
+import FeedbackItemModal from "./FeedbackItemModal";
+import FeedbackModal from "./FeedbackModal";
 
 export default function Board() {
   const [showFeedbackModalForm, setShowFeedbackModalForm] = useState(false)
   const [openFeedbackModal, setopenFeedbackModal] = useState(false)
+  const [votes, setVotes] = useState([])
 
   const [feedbacks, setFeedbacks] = useState([])
 
@@ -19,7 +21,7 @@ export default function Board() {
     setopenFeedbackModal(feedback);
   }
 
-
+  // ! Fetching the feedbacks items from the database
   const getFeedbacks = async ()=>{
     try{
         const res = await axios.get('/api/feedback')
@@ -27,33 +29,46 @@ export default function Board() {
     }catch(err){
         console.log(err)
     }
-    }
+  }
 
   useEffect(()=>{
     getFeedbacks()
   },[])
-  const {data:session} = useSession()
+
+  // ! Fetching the votes from the database
+  const getVotes = async ()=>{
+    try{
+        const feedbackIds = feedbacks.map((feedback)=>feedback.id).join(',')
+        const res = await axios.get('/api/vote?feedbackIds='+feedbackIds)
+        setVotes(res.data)
+    }catch(err){
+        console.log(err)
+    }
+  }
 
   useEffect(()=>{
-    if(session?.user?.email){
+    getVotes()
+  },[feedbacks])
+
+  const {data:session} = useSession()
+  const userEmail = session?.user?.email
+
+  useEffect(()=>{
+    if(userEmail){
       const feedbackId = localStorage.getItem("feedback-id to vote")
       if(feedbackId){
         axios.post('/api/vote', {feedbackId})
         .then((res)=>{
-          console.log(res.data)
           localStorage.removeItem("feedback-id to vote")
+          getVotes();
         })
-
       }
     }
-  },[session?.user?.email]) // [session?.user?.email] is a dependency array
-
-    
+  },[userEmail]) // [userEmail] is a dependency array
 
   return (
-    
     <main className="bg-white md:max-w-2xl mx-auto md:shadow-lg md:rounded -lg md:mt-8 overflow-hidden">
-        {session?.user?.email && "Welcome "+session.user.email|| "Welcome Guest!"}
+        {userEmail && "Welcome "+userEmail || "Welcome Guest!"}
       <div className="bg-gradient-to-r from-cyan-400 to-blue-400 p-8">
         <h1 className="font-bold text-xl">VoxBoard</h1>
         <p className="text-opacity-90 text-slate-700">
@@ -69,15 +84,24 @@ export default function Board() {
 
       <div className="px-8">
         {feedbacks.map((feedback)=>{
-          return <FeedbackItem key={feedback.id} openShow={()=>openFeedbackItem(feedback)} {...feedback} />
-
+          return <FeedbackItem {...feedback}
+          key={feedback.id}
+          onVoteChange={getVotes}
+          // parentLoadingVotes={votesLoading}
+          openShow={()=>openFeedbackItem(feedback)} 
+          votes = {votes.filter((vote)=>vote.feedbackId === feedback.id)}
+          />
         })}
       </div>
 
       {showFeedbackModalForm && <FeedbackModal setShow={setShowFeedbackModalForm} />}
 
-      {openFeedbackModal && <FeedbackItemModal {...openFeedbackModal} feedback = {openFeedbackModal} openShow={setopenFeedbackModal}  />}
+      {openFeedbackModal && <FeedbackItemModal {...openFeedbackModal} 
+      feedback = {openFeedbackModal} 
+      openShow={setopenFeedbackModal} 
+      votes={votes.filter((vote)=>vote.feedbackId === openFeedbackModal.id)} 
+      onVoteChange={getVotes}
+      />}
     </main>
-    
   );
 }

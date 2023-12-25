@@ -25,7 +25,13 @@ export async function POST(request) {
       },
     });
     if (vote) {
+      console.log(vote.id)
         // implement delete vote here if necessary
+      await prisma.vote.delete({
+        where:{
+          id: vote.id
+        }
+      })
         
       return Response.json({
         error: "You have already voted for this feedback",
@@ -42,4 +48,23 @@ export async function POST(request) {
   } catch (error) {
     errorHandler(error);
   }
+}
+
+export async function GET(request){
+  const url = new URL(request.url);
+  if(url.searchParams.get('feedbackIds')){
+    const feedbackIds = url.searchParams.get('feedbackIds').split(',');
+    const voteDocs = await prisma.vote.findMany({
+      where:{
+        feedbackId: {
+          in:
+            feedbackIds
+          
+        }
+      }
+    })
+    return Response.json(voteDocs) 
+  }
+
+  return Response.json([])
 }
