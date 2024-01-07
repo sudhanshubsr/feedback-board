@@ -36,9 +36,9 @@ const FeedbackItemPopup = ({title,description,openShow, votes, id, onVoteChange,
 
 
   return (
-
+    
     <Popup title={''} setShow={openShow}>
-        <div className='p-8 pb-2 '>
+        <div className='p-8 pb-2'>
             <h2 className='text-lg font-bold mb-2 '>{title}</h2>
             <p className='text-gray-600'>{description}</p>
             {
@@ -47,7 +47,8 @@ const FeedbackItemPopup = ({title,description,openShow, votes, id, onVoteChange,
                   <span className='text-gray-600'>Attachments:</span>
                 <div className='mt-1 flex gap-2' >
                   {uploads.map((link)=>(
-                    <Attachment key={link.id} link={link} showRemoveButton={false}/>
+          
+                    <Attachment key={link.index} link={link} showRemoveButton={false}/>
                   ))}
                 </div>
                 </div>
@@ -107,7 +108,7 @@ const FeedbackItemPopup = ({title,description,openShow, votes, id, onVoteChange,
             
             </div>
             <div>
-                <FeedbackItemPopupComments/>
+                <FeedbackItemPopupComments feedbackId={id}/>
             </div>
 
         </div> 

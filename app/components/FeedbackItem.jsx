@@ -6,8 +6,8 @@ import { useSession } from 'next-auth/react';
 import axios from 'axios';
 import { MoonLoader } from 'react-spinners';
 import LoginPopup from './LoginPopup';
-
-const FeedbackItem = ({ title, description, openShow, votes, id, onVoteChange, parentLoadingVotes=true}) => {
+import Trash from "./icons/Trash"
+const FeedbackItem = ({ title, description, openShow, votes, id, onVoteChange}) => {
   
   
   const [showLoginPopup, setShowLoginPopup] = useState(false); // State variable to control the visibility of the login popup
@@ -34,11 +34,13 @@ const FeedbackItem = ({ title, description, openShow, votes, id, onVoteChange, p
     }
   };
 
+
+
   const isVoted = !!votes?.some(vote => vote.userEmail === session?.user?.email)
   
 
   return (
-    <div className="flex gap-8 items-center my-8 b">
+    <div className="flex gap-8 items-center my-8"> 
       <a href="" onClick={(e) => { e.preventDefault(); openShow(); }} className="flex-grow">
         <h2 className="font-bold">{title}</h2>
         <p className="text-gray-600 text-sm">{description}</p>
@@ -47,6 +49,7 @@ const FeedbackItem = ({ title, description, openShow, votes, id, onVoteChange, p
         {showLoginPopup && (
           <LoginPopup setShowLoginPopup={setShowLoginPopup} />
         )}
+        
           <Button {...(isVoted ? { primary: true } : {})} onClick={handleVoteClick} className="shadow-md border ">
           {!isVotesLoading && (
             <>

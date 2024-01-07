@@ -3,12 +3,13 @@ import prisma from "../../../prisma/index.js";
 
 export async function POST(request) {
   const jsonbody = await request.json();
-  const { title, description, uploads } = jsonbody;
+  const { title, description, uploads, userEmail} = jsonbody;
   await prisma.feedback.create({
     data: {
       title,
       description,
       uploads,
+      userEmail,
     },
   });
   return Response.json({
@@ -16,6 +17,7 @@ export async function POST(request) {
       title,
       description,
       uploads,
+      userEmail,
     },
   });
 }

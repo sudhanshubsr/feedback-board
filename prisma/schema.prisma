@@ -13,6 +13,7 @@ datasource db {
 model Feedback {
   id          String    @id @default(auto()) @map("_id") @db.ObjectId
   title       String
+  userEmail   String?   @unique
   description String
   uploads     String[]
   createdAt   DateTime  @default(now())
@@ -34,9 +35,21 @@ model Vote{
 
 model Comment {
   id         String   @id @default(auto()) @map("_id") @db.ObjectId
+  userEmail  String
+  uploads    String[]
   text       String
   createdAt  DateTime @default(now())
   updatedAt  DateTime @updatedAt
   feedback   Feedback @relation(fields: [feedbackId], references: [id]) 
   feedbackId String   @db.ObjectId
+  user       users?    @relation(fields: [userEmail], references: [email]) 
+}
+
+model users{
+  id         String   @id @default(auto()) @map("_id") @db.ObjectId
+  email      String   @unique
+  name       String
+  image      String
+  emailVerfied DateTime?
+  comments   Comment[]
 }

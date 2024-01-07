@@ -2,10 +2,14 @@ import React from 'react'
 import Button from './Button'
 import AttachFileComponent from './AttachFileComponent'
 import { useState } from 'react'
+import axios from 'axios'
+import { useSession } from 'next-auth/react'
 import Attachment from './Attachment'
-const FeedbackItemPopupCommentsForm = () => {
+const FeedbackItemPopupCommentsForm = ({feedbackId, onCommentCreate}) => {
     const [commentText, setCommentText] = useState('')
     const [uploads, setUploads] = useState([])
+    const {data:session} = useSession();
+    const userEmail = session?.user?.email
 
     const handleUpload = (newlinks)=>{
         setUploads([...uploads,...newlinks])
@@ -19,10 +23,20 @@ const FeedbackItemPopupCommentsForm = () => {
 
     const handleCreateComment = (e) => {
         e.preventDefault()
-        console.log(commentText)
-        console.log(uploads)
-    }
+        axios.post('/api/comment',
+        {
+            text: commentText,
+            feedbackId,
+            uploads,
+            userEmail
 
+        })
+        .then(()=>{
+            setCommentText('')
+            setUploads([])
+            onCommentCreate();
+        })
+}
   return (
     <form>
                 <textarea className='border rounded-md w-full p-2' placeholder='Let us Know What you think...' 
@@ -35,7 +49,7 @@ const FeedbackItemPopupCommentsForm = () => {
                      
                       <div className="flex gap-2 mt-2">
                       {uploads.map((link)=>(
-                        <Attachment key={link.id} link={link} handleRemoveFileClick={(e,link)=>handleRemoveFileClick(e,link)} showRemoveButton={true}/>
+                        <Attachment key={link.index} link={link} handleRemoveFileClick={(e,link)=>handleRemoveFileClick(e,link)} showRemoveButton={true}/>
                       ))}
                     </div>
                     </div>

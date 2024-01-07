@@ -4,7 +4,7 @@ import Trash from "./icons/Trash"
 const Attachment = ({link, showRemoveButton=false, handleRemoveFileClick}) => {
 
   return (
-    <div key={link.id} className="flex gap-2 h-16">
+    <div key={link.id} className="flex gap-2 h-16 ">
       <a href={link} target="_blank" className="h-16 relative">
         {showRemoveButton && 
         <button onClick={(e)=>{handleRemoveFileClick(e,link)}} className="absolute -right-1 -top-1  bg-red-400 shadow-md  rounded-md p-1 text-white">

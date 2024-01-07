@@ -1,40 +1,37 @@
-import React from 'react'
+import { useEffect } from "react";
 
-const Popup = ({setShow,children, title, narrow}) => {
+export default function Popup({setShow, children, title, narrow}) {
+  function close(ev) {
+    ev.preventDefault();
+    ev.stopPropagation();
+    setShow(false);
+    
+  }
+
   return (
-    // ? Change this as click outside to close
-
-    <div className='fixed inset-0 bg-white md:bg-black md:bg-opacity-80 flex justify-center overflow-y-auto' onClick={()=>setShow(false)}>
-
-    <button onClick={()=>setShow(false)} className="hidden md:block fixed top-4 right-4 text-white">
-        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" dataslot="icon" className="w-6 h-6">
-    <path strokeLinecap="round" strokeLinejoin="round" d="M6 18 18 6M6 6l12 12" />
-    </svg>
-
-    </button>
-      <div className='w-full md:mt-40'>
-          <div className={(narrow ? "md:max-w-md" : "md:max-w-2xl")+' bg-white md:mx-auto md:rounded-lg overflow-hidden'} onClick={(e)=>e.stopPropagation()}>
-            <div className="relative min-h-[40px] md:min-h-0">
-              <button className="absolute top-4 left-8 md:hidden text-gray-600 cursor-pointer"
-              onClick={()=>setShow(false)} 
-              >
-              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor" dataslot="icon" className="w-5 h-5">
-<path strokeLinecap="round" strokeLinejoin="round" d="M10.5 19.5 3 12m0 0 7.5-7.5M3 12h18" />
-</svg>
-
-
-              </button>
-            </div>
+    <div className="fixed z-40 inset-0 bg-white md:bg-black md:bg-opacity-80 flex md:items-center overflow-hidden" onClick={close}>
+      <button onClick={close} className="hidden md:block fixed top-4 right-4 text-white">
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-8 h-8">
+          <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
+        </svg>
+      </button>
+      <div className="w-full h-full overflow-y-auto">
+        <div className={(narrow ? 'md:max-w-sm':'md:max-w-2xl')+" bg-white md:mx-auto md:my-8 md:rounded-lg overflow-hidden"} onClick={e => e.stopPropagation()}>
+          <div className="relative min-h-[40px] md:min-h-0">
+            <button onClick={close} className="absolute top-4 left-8 md:hidden text-gray-600">
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6">
+                <path strokeLinecap="round" strokeLinejoin="round" d="M10.5 19.5L3 12m0 0l7.5-7.5M3 12h18" />
+              </svg>
+            </button>
             {!!title && (
-                <h2 className='py-4 text-center border-b-2 '>
+              <h2 className="py-4 text-center border-b">
                 {title}
-                </h2>
-                )}
-                    {children}
+              </h2>
+            )}
           </div>
+          {children}
+        </div>
       </div>
-  </div>
-  )
+    </div>
+  );
 }
-
-export default Popup

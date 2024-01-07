@@ -4,7 +4,7 @@ import Button from "./Button"
 import Popup from "./Popup"
 import Attachment from './Attachment'
 import AttachFileComponent from './AttachFileComponent'
-
+import { useSession } from 'next-auth/react'
 
 
 export default function FeedbackModal({setShow, onCreate}){
@@ -12,10 +12,14 @@ export default function FeedbackModal({setShow, onCreate}){
   const [title, setTitle] = useState('')
   const [description, setDescription] = useState('')
   const [uploads, setUploads] = useState([])
+  const {data:session} = useSession()
+
+  const userEmail = session?.user?.email
+
   
   const handleCreatePostClick = (e) => {
     e.preventDefault()
-    axios.post('/api/feedback',{title,description, uploads})
+    axios.post('/api/feedback',{title,description, uploads, userEmail})
     .then(()=>{
       setShow(false)
       onCreate()

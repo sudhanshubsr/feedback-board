@@ -19,7 +19,7 @@ const Header = () => {
         setShowLoginPopup(true)
     }
   return (
-    <div className='max-w-2xl mx-auto text-right mt-3 mb-[-10px] flex items-center justify-end'>
+    <div className='max-w-2xl mx-auto text-right mt-2 mb-2 sm:mb-2 sm:mt-2 flex items-center justify-end'>
         {isLoggedIn && (
             <>
             Hello, {session.user.name}
