@@ -1,6 +1,5 @@
 import axios from 'axios'
 import { useState } from 'react'
-import { MoonLoader, PropagateLoader, ScaleLoader } from "react-spinners"
 import Button from "./Button"
 import Popup from "./Popup"
 import Attachment from './Attachment'
@@ -13,8 +12,7 @@ export default function FeedbackModal({setShow, onCreate}){
   const [title, setTitle] = useState('')
   const [description, setDescription] = useState('')
   const [uploads, setUploads] = useState([])
-  const [isUploading, setIsUploading] = useState(false)
-
+  
   const handleCreatePostClick = (e) => {
     e.preventDefault()
     axios.post('/api/feedback',{title,description, uploads})
@@ -29,23 +27,9 @@ export default function FeedbackModal({setShow, onCreate}){
     })
   }
 
-  const handleUploadFileonChange= async (e)=>{
-      const files = [...e.target.files]
-      setIsUploading(true)
-      const uploadedFiles = new FormData()
-      files.forEach((file)=>{
-        uploadedFiles.append('file',file)
-      })
-      await axios.post('/api/upload',uploadedFiles)
-      .then((res)=>{
-        setUploads([...uploads,...res.data]) 
-        setIsUploading(false)
-      })
-      .catch(err=>{
-        console.log(err)
-      })
-
-  }
+ const handleUpload = (newlinks)=>{
+    setUploads([...uploads,...newlinks])
+ }
 
   const handleRemoveFileClick = (e,link)=>{
     e.preventDefault()
@@ -86,9 +70,7 @@ export default function FeedbackModal({setShow, onCreate}){
                   )
                   } 
                   <div className="flex gap-2 mt-2 justify-end">
-                  <AttachFileComponent 
-                  isUploading={isUploading} 
-                  onInputChange={handleUploadFileonChange} />
+                  <AttachFileComponent onUploadFile={handleUpload} />
                   <Button  primary="true" className=""
                   onClick={handleCreatePostClick}>Create Post</Button>
                   </div>
