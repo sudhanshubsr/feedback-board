@@ -3,11 +3,12 @@ import { useState } from 'react'
 import { MoonLoader, PropagateLoader, ScaleLoader } from "react-spinners"
 import Button from "./Button"
 import Popup from "./Popup"
-import Attachmentclip from "./icons/Attachmentclip"
-import Trash from "./icons/Trash"
+import Attachment from './Attachment'
+import AttachFileComponent from './AttachFileComponent'
 
 
-export default function FeedbackModal({setShow}){
+
+export default function FeedbackModal({setShow, onCreate}){
 
   const [title, setTitle] = useState('')
   const [description, setDescription] = useState('')
@@ -19,7 +20,9 @@ export default function FeedbackModal({setShow}){
     axios.post('/api/feedback',{title,description, uploads})
     .then(()=>{
       setShow(false)
+      onCreate()
       console.log("feedback successfully created")
+
     })
     .catch(err=>{
       console.log(err)
@@ -36,7 +39,6 @@ export default function FeedbackModal({setShow}){
       await axios.post('/api/upload',uploadedFiles)
       .then((res)=>{
         setUploads([...uploads,...res.data]) 
-        // setUploads(res.data)
         setIsUploading(false)
       })
       .catch(err=>{
@@ -45,7 +47,7 @@ export default function FeedbackModal({setShow}){
 
   }
 
-  const handleRemoveFileClick = (link,e)=>{
+  const handleRemoveFileClick = (e,link)=>{
     e.preventDefault()
     // axios.delete('/api/upload',{data:{link}})
     setUploads(uploads.filter((item)=>item !== link))
@@ -77,34 +79,16 @@ export default function FeedbackModal({setShow}){
                      
                       <div className="flex gap-2 mt-2">
                       {uploads.map((link)=>(
-                        <div key={link.id} className="flex gap-2 h-16">
-          
-                          <a href={link} target="_blank" className="h-16 relative">
-                            <button onClick={(e)=>{handleRemoveFileClick(link,e)}} className="absolute -right-1 -top-1  bg-red-400 shadow-md  rounded-md p-1 text-white">
-                              <Trash className="w-4 h-4"/>
-                            </button>
-                          {/.(jpg|png|jpeg)$/.test(link) ? (
-                            // eslint-disable-next-line @next/next/no-img-element
-                            <img src={link} className="w-auto h-16 object-cover rounded-md"  alt="uploaded image"/>
-                          ):(
-                           <div className="bg-gray-300 h-16 rounded-md p-2 gap-2 flex items-center">
-                            <Attachmentclip className="w-4 h-4"/>
-                            {link.split('/')[3].substring(13)}
-                            </div>
-                          )}
-                          </a>
-                        </div>
+                        <Attachment key={link.id} link={link} handleRemoveFileClick={(e,link)=>handleRemoveFileClick(e,link)} showRemoveButton={true}/>
                       ))}
                     </div>
                     </div>
                   )
                   } 
                   <div className="flex gap-2 mt-2 justify-end">
-                  <label className="flex gap-2 py-2 px-4 cursor-pointer text-gray-600 items-center">
-                   <MoonLoader color="#4B5563" loading={isUploading} size={16} />
-                    <span className={( isUploading ? "text-gray-400" : "text-gray-600" )}>{isUploading ? 'Uploading...': 'Attach Files'} </span>
-                    <input onChange={handleUploadFileonChange} multiple type="file" className="hidden" />
-                  </label>
+                  <AttachFileComponent 
+                  isUploading={isUploading} 
+                  onInputChange={handleUploadFileonChange} />
                   <Button  primary="true" className=""
                   onClick={handleCreatePostClick}>Create Post</Button>
                   </div>

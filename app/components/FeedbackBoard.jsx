@@ -33,7 +33,7 @@ export default function Board() {
 
   useEffect(()=>{
     getFeedbacks()
-  },[])
+  },[feedbacks])
 
   // ! Fetching the votes from the database
   const getVotes = async ()=>{
@@ -67,8 +67,8 @@ export default function Board() {
   },[userEmail]) // [userEmail] is a dependency array
 
   return (
-    <main className="bg-white md:max-w-2xl mx-auto md:shadow-lg md:rounded -lg md:mt-8 overflow-hidden">
-        {userEmail && "Welcome "+userEmail || "Welcome Guest!"}
+    <main className="bg-white md:max-w-2xl mx-auto md:shadow-lg md:rounded -lg md:mt-8 overflow-hidden mb-3">
+    
       <div className="bg-gradient-to-r from-cyan-400 to-blue-400 p-8">
         <h1 className="font-bold text-xl">VoxBoard</h1>
         <p className="text-opacity-90 text-slate-700">
@@ -94,7 +94,7 @@ export default function Board() {
         })}
       </div>
 
-      {showFeedbackModalForm && <FeedbackModal setShow={setShowFeedbackModalForm} />}
+      {showFeedbackModalForm && <FeedbackModal setShow={setShowFeedbackModalForm} onCreate={getFeedbacks}/>}
 
       {openFeedbackModal && <FeedbackItemModal {...openFeedbackModal} 
       feedback = {openFeedbackModal} 

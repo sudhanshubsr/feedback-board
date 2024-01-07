@@ -4,7 +4,7 @@ const Popup = ({setShow,children, title, narrow}) => {
   return (
     // ? Change this as click outside to close
 
-    <div className='fixed inset-0 bg-white md:bg-black md:bg-opacity-80 flex justify-center' onClick={()=>setShow(false)}>
+    <div className='fixed inset-0 bg-white md:bg-black md:bg-opacity-80 flex justify-center overflow-y-auto' onClick={()=>setShow(false)}>
 
     <button onClick={()=>setShow(false)} className="hidden md:block fixed top-4 right-4 text-white">
         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" dataslot="icon" className="w-6 h-6">

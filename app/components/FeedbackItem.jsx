@@ -1,10 +1,11 @@
-import React, { useState,useCallback } from 'react';
+import React, { useState} from 'react';
 import Popup from './Popup';
 import {signIn} from "next-auth/react"
 import Button from './Button';
 import { useSession } from 'next-auth/react';
 import axios from 'axios';
 import { MoonLoader } from 'react-spinners';
+import LoginPopup from './LoginPopup';
 
 const FeedbackItem = ({ title, description, openShow, votes, id, onVoteChange, parentLoadingVotes=true}) => {
   
@@ -33,20 +34,6 @@ const FeedbackItem = ({ title, description, openShow, votes, id, onVoteChange, p
     }
   };
 
-  // Function to handle Google login
-  const handleGoogleLogin = async (e) => {
-    e.preventDefault();
-    e.stopPropagation();
-    await signIn("google"); // Perform Google login using the next-auth library
-  };
-
-  // Function to handle Github login
-  const handleGithubLogin = (e) => {
-    e.preventDefault();
-    e.stopPropagation();
-    signIn("github"); // Perform Github login using the next-auth library
-  };
-
   const isVoted = !!votes?.some(vote => vote.userEmail === session?.user?.email)
   
 
@@ -57,19 +44,9 @@ const FeedbackItem = ({ title, description, openShow, votes, id, onVoteChange, p
         <p className="text-gray-600 text-sm">{description}</p>
       </a>
       <div>
-        <div></div>
         {showLoginPopup && (
-          <div>
-            <Popup narrow setShow={setShowLoginPopup} title={"Login to Confirm Your Vote"}>
-              <div className="flex gap-4 justify-center p-2">
-                <button onClick={handleGoogleLogin} className="bg-blue-600 text-white rounded-md py-1 px-3">Login with Google</button>
-                <button onClick={handleGithubLogin} className="bg-blue-600 text-white rounded-md py-1 px-3">Login with Github</button>
-              </div>
-            </Popup>
-          </div>
+          <LoginPopup setShowLoginPopup={setShowLoginPopup} />
         )}
-
-          
           <Button {...(isVoted ? { primary: true } : {})} onClick={handleVoteClick} className="shadow-md border ">
           {!isVotesLoading && (
             <>

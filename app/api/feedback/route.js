@@ -21,7 +21,11 @@ export async function POST(request) {
 }
 
 export async function GET(){
-  const feedbacks = await prisma.feedback.findMany();
+  const feedbacks = (await prisma.feedback.findMany({
+    orderBy: {
+      createdAt: "desc",
+    },
+  }));
   return Response.json(feedbacks);
 }
 
