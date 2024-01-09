@@ -14,19 +14,19 @@ export default function FeedbackModal({ setShow, onCreate }) {
   const [showLoginPopup, setShowLoginPopup] = useState(false);
 
   const { data: session } = useSession();
-  const userEmail = session?.user?.email;
+
 
   // Function to handle the click event for creating a post
   const handleCreatePostClick = (e) => {
     e.preventDefault();
     if (!session) {
       // If user is not logged in, save the post to create later
-      localStorage.setItem('feedbackToPost', JSON.stringify({ title, description, uploads, userEmail }));
+      localStorage.setItem('feedbackToPost', JSON.stringify({ title, description, uploads}));
       setShowLoginPopup(true);
     } else {
       // If user is logged in, create the post
       axios
-        .post('/api/feedback', { title, description, uploads, userEmail })
+        .post('/api/feedback', { title, description, uploads})
         .then(() => {
           setShow(false);
           onCreate();

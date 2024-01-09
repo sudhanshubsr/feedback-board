@@ -74,6 +74,7 @@ const FeedbackItemPopupCommentsForm = ({ feedbackId, onCommentCreate }) => {
           </div>
         </div>
       )}
+
       {/* File upload and comment submission buttons */}
       <div className='flex justify-end gap-2 mt-2'>
         <AttachFileComponent onUploadFile={handleUpload} />
@@ -81,6 +82,7 @@ const FeedbackItemPopupCommentsForm = ({ feedbackId, onCommentCreate }) => {
           {session ? 'Comment' : 'Login and Comment'}
         </Button>
       </div>
+      
     </form>
   );
 };

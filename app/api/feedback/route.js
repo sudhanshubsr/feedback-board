@@ -1,9 +1,13 @@
 
+import { getServerSession } from "next-auth";
 import prisma from "../../../prisma/index.js";
+import { authOptions } from '../../utils/auth.js'
 
 export async function POST(request) {
   const jsonbody = await request.json();
-  const { title, description, uploads, userEmail} = jsonbody;
+  const { title, description, uploads} = jsonbody;
+  const session =await getServerSession(authOptions)
+  const userEmail = session.user.email;
   const feedbackDoc = await prisma.feedback.create({
     data: {
       title,
@@ -33,5 +37,23 @@ export async function GET(request){
   }));
   return Response.json(feedbacks);
 }
+}
+
+export async function PUT(request){
+  const jsonbody = await request.json();
+  const {feedbackId, title, description, uploads, userEmail} = jsonbody;
+  const updatedFeedbackDoc = await prisma.feedback.update({
+    where:{
+      id: feedbackId,
+    },
+    data:{
+      title,
+      description,
+      uploads,
+      userEmail,
+    }
+
+  })
+  return Response.json(updatedFeedbackDoc);
 }
 

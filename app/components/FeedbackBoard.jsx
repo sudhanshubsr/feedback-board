@@ -68,6 +68,7 @@ export default function Board() {
   useEffect(() => {
     if (userEmail) {
       // Check for feedback to vote in local storage
+
       const feedbackToVote = localStorage.getItem("feedback-id to vote");
       if (feedbackToVote) {
         axios.post('/api/vote', { feedbackToVote })
@@ -104,6 +105,13 @@ export default function Board() {
     }
   }, [userEmail]); // eslint-disable-line react-hooks/exhaustive-deps
 
+
+  const handleFeedbackUpdate = async (updatedFeedback) => {
+    setopenFeedbackModal(prevData =>{
+      return {...prevData, ...updatedFeedback}
+    })
+    await getFeedbacks();
+  }
   return (
     <main className="bg-white md:max-w-2xl mx-auto md:shadow-lg md:rounded -lg md:mt-8 overflow-hidden mb-3">
       <div className="bg-gradient-to-r from-cyan-400 to-blue-400 p-8">
@@ -147,6 +155,7 @@ export default function Board() {
           {...openFeedbackModal}
           feedback={openFeedbackModal}
           openShow={setopenFeedbackModal}
+          onFeedbackUpdate={handleFeedbackUpdate}
           votes={votes.filter((vote) => vote.feedbackId === openFeedbackModal.id)}
           onVoteChange={getVotes}
         />

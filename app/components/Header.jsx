@@ -11,7 +11,6 @@ import Logout from './icons/Logout';
 
 const Header = () => {
   const { data: session } = useSession();
-  const isLoggedIn = !!session?.user?.email;
   const [showLoginPopup, setShowLoginPopup] = useState(false); // State variable to control the visibility of the login popup
 
   // Function to handle user logout
@@ -26,15 +25,15 @@ const Header = () => {
 
   return (
     <div className='max-w-2xl mx-auto text-right mt-2 mb-2 sm:mb-2 sm:mt-2 flex items-center justify-end'>
-      {isLoggedIn && (
+      {session && (
         <>
-          Hello, {session.user.name}
+          Hello, {session.user.name || session.user.email}
           <Button className='ml-4 shadow-md shadow-gray-400  px-3 bg-red-500 text-white' onClick={logout}>
             Logout <Logout />
           </Button>
         </>
       )}
-      {!isLoggedIn && (
+      {!session && (
         <>
           <Button className='ml-4 shadow-sm shadow-gray-400 px-3 bg-blue-500 text-white' onClick={login}>
             Login <Login />

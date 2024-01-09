@@ -2,6 +2,7 @@ import React from 'react';
 import { MoonLoader } from 'react-spinners';
 import { useState } from 'react';
 import axios from 'axios';
+import { MdOutlineFileUpload } from "react-icons/md";
 
 const AttachFileComponent = ({ onUploadFile }) => {
   // State for tracking the file upload status
@@ -40,6 +41,7 @@ const AttachFileComponent = ({ onUploadFile }) => {
       {/* Loader to indicate file upload in progress */}
       <MoonLoader color="#4B5563" loading={isUploading} size={16} />
       {/* Text indicating file upload status */}
+      <MdOutlineFileUpload className='w-5 h-5'/>
       <span className={(isUploading ? 'text-gray-400' : 'text-gray-600')}>
         {isUploading ? 'Uploading...' : 'Attach Files'}
       </span>

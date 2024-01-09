@@ -2,6 +2,7 @@ import React from 'react';
 import Attachmentclip from "./icons/Attachmentclip";
 import Trash from "./icons/Trash";
 
+
 const Attachment = ({ link, showRemoveButton = false, handleRemoveFileClick }) => {
   return (
     <div key={link.id} className="flex gap-2 h-16 ">
