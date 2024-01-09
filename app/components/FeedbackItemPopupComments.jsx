@@ -27,7 +27,7 @@ const FeedbackItemPopupComments = ({ feedbackId }) => {
     <div className='p-8'>
       {comments.length > 0 &&
         comments.map((comment) => (
-          <div key={comment._id} className='mb-8'>
+          <div key={comment.id} className='mb-8'>
             <div className='flex gap-4'>
               <Avatar url={comment.user ? comment.user.image : 'https://devforum-uploads.s3.dualstack.us-east-2.amazonaws.com/uploads/original/4X/1/0/e/10e6c0a439e17280a6f3fa6ae059819af5517efd.png'} />
               <div>
@@ -36,8 +36,8 @@ const FeedbackItemPopupComments = ({ feedbackId }) => {
                   {comment.user ? comment.user?.name : comment.userEmail} &middot; {<TimeAgo datetime={comment.createdAt} />}
                   <div className='mt-1 flex gap-2'>
                     {comment.uploads?.length > 0 &&
-                      comment.uploads.map((link) => (
-                        <Attachment key={link.index} link={link} showRemoveButton={false} />
+                      comment.uploads.map((link,index) => (
+                        <Attachment key={index} link={link} showRemoveButton={false} />
                       ))}
                   </div>
                 </div>

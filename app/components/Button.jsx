@@ -10,7 +10,7 @@ const Button = (props) => {
       disabled={props.disabled}
       className={"py-2 px-4 rounded-md text-opacity-90 flex items-center gap-2 " + (props.className || '') + ' '
       +(props.primary ? 'bg-blue-500 text-white' : 'text-gray-600')
-      +(props.disabled ? ' bg-gray-200 text-gray-400 cursor-not-allowed' : '')
+      +(props.disabled ? ' bg-gray-200 text-black  cursor-not-allowed' : '')
     }
     />
   );

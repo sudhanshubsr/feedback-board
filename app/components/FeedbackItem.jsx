@@ -43,7 +43,7 @@ const FeedbackItem = ({ title, description, openShow, votes, id, onVoteChange })
       <div>
         {showLoginPopup && <LoginPopup setShowLoginPopup={setShowLoginPopup} />}
 
-        <Button {...(isVoted ? { primary: true } : {})} onClick={handleVoteClick} className="shadow-md border">
+        <Button primary={isVoted ? "true" : undefined} onClick={handleVoteClick} className="shadow-md border">
           {!isVotesLoading && (
             <>
               {!isVoted && (

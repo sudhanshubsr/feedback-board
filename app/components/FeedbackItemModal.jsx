@@ -10,11 +10,11 @@ import Attachment from './Attachment';
 
 const FeedbackItemPopup = ({ title, description, openShow, votes, id, onVoteChange, uploads }) => {
   const [isVotesLoading, setIsVotesLoading] = useState(false);
-  const [isLoggedin, setIsLoggedin] = useState(false);
+  const { data: session } = useSession();
 
   const handleVoteClick = async () => {
     try {
-      if (isLoggedin) {
+      if (session?.user) {
         setIsVotesLoading(true);
         await axios.post('/api/vote', { feedbackId: id });
         await onVoteChange();
@@ -27,7 +27,7 @@ const FeedbackItemPopup = ({ title, description, openShow, votes, id, onVoteChan
     }
   };
 
-  const { data: session } = useSession();
+
   const iVoted = votes?.some((vote) => vote.userEmail === session?.user?.email);
 
   return (
@@ -40,16 +40,21 @@ const FeedbackItemPopup = ({ title, description, openShow, votes, id, onVoteChan
           <div className='mt-4'>
             <span className='text-gray-600'>Attachments:</span>
             <div className='mt-1 flex gap-2'>
-              {uploads.map((link) => (
-                <Attachment key={link.index} link={link} showRemoveButton={false} />
+              {uploads.map((link,index) => (
+                <Attachment key={index} link={link} showRemoveButton={false} />
               ))}
             </div>
           </div>
         )}
 
         <div className='flex justify-end px-8 py-2 border-b'>
+        
+        {isVotesLoading && (
+            <MoonLoader size={20} color={"#000"} loading={isVotesLoading} />
+        )}
+
           {!isVotesLoading && (
-            <Button primary="true" onClick={handleVoteClick}>
+            <Button primary={iVoted ? 'true':""} onClick={handleVoteClick} disabled={!session?.user}>
               {!iVoted && (
                 <span>
                   <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={4} stroke="currentColor" dataslot="icon" className="w-4 h-4">
@@ -66,19 +71,17 @@ const FeedbackItemPopup = ({ title, description, openShow, votes, id, onVoteChan
               )}
               {!iVoted && (
                 <>
-                  Upvote {votes?.length || 0}
+                  {session ? 'Upvote' : 'Login to vote'} {session ? (votes?.length || 0) : ''}
                 </>
               )}
               {iVoted && (
                 <>
-                  Downvote {votes?.length || 0}
+                  {session ? 'Downvote' : 'Login to vote'} {session ? (votes?.length || 0) : ''}
                 </>
               )}
             </Button>
           )}
-          {isVotesLoading && (
-            <MoonLoader size={20} color={"#000"} loading={isVotesLoading} />
-          )}
+          
         </div>
         
         <div>
