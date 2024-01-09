@@ -1,4 +1,6 @@
+import { getServerSession } from "next-auth";
 import prisma from "../../../prisma/index.js";
+import {authOptions} from '../../utils/auth.js'
 export async function POST(req){
     const jsonbody = await req.json();
     const {text, userEmail, feedbackId, uploads} = jsonbody;
@@ -48,3 +50,52 @@ export async function GET(req) {
     } 
   }
   
+
+  export async function PUT(req) {
+    try {
+      // Parse the JSON body from the request
+      const jsonbody = await req.json();
+  
+      // Extract relevant data from the JSON body
+      const { text, uploads, feedbackId, id } = jsonbody;
+      const  session = await getServerSession(authOptions)
+      const userEmail = session.user.email;
+      const comment = await prisma.comment.update({
+        where:{
+          id: id
+        },
+        data:{
+          text: text,
+          uploads: uploads,
+          feedbackId,
+          userEmail,
+        }
+
+      })
+      return Response.json(comment);
+    } catch (error) {
+      // Handle errors
+      console.error("Error in PUT request:", error);
+      return Response.json({ error: "Internal Server Error" }, { status: 500 });
+    }
+  }
+  
+
+  export async function DELETE(req) {
+    try {
+      // Parse the JSON body from the request
+      const jsonbody = await req.json();
+      const {id} = jsonbody;
+      await prisma.comment.delete({
+        where: {
+          id: id,
+        },
+      });
+  
+      return Response.json({ success: true });
+    } catch (error) {
+      // Handle errors
+      console.error("Error in DELETE request:", error);
+      return Response.json({ error: "Internal Server Error" }, { status: 500 });
+    }
+  }
