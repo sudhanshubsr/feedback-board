@@ -1,6 +1,6 @@
 import { getServerSession } from "next-auth";
 import prisma from "../../../prisma/index.js";
-import { authOptions } from "../auth/[...nextauth]/route";
+import { authOptions } from "../../utils/auth.js";
 
 // Error handling middleware
 function errorHandler(error) {
@@ -25,7 +25,6 @@ export async function POST(request) {
       },
     });
     if (vote) {
-      console.log(vote.id)
         // implement delete vote here if necessary
       await prisma.vote.delete({
         where:{

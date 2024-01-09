@@ -1,16 +1,17 @@
 'use client';
 import { SessionProvider } from "next-auth/react";
-import Board from "@/app/components/FeedbackBoard";
+import Board from "../app/components/FeedbackBoard.jsx";
 import React from 'react'
-import Header from '@/app/components/Header'
+import Header from '../app/components/Header.jsx'
+
 
 
 export default function Home(){
   
   return (
     <SessionProvider>
-      <Header />
-      <Board />
+        <Header />
+        <Board />
     </SessionProvider>
   )
 }
