@@ -66,8 +66,8 @@ export default function FeedbackModal({ setShow, onCreate }) {
         {/* Description textarea */}
         <label className='block mt-4 mb-1 text-gray-700'>Details</label>
         <textarea
-          className='w-full border p-2 rounded-md'
-          placeholder='Describe your suggestion'
+          className='w-full border p-2 rounded-md h-36'
+          placeholder='Describe your suggestion.....'
           onChange={(e) => setDescription(e.target.value)}
           value={description}
           required

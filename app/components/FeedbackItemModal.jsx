@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import Popup from './Popup';
 import Button from './Button';
 import FeedbackItemPopupComments from './FeedbackItemPopupComments';
@@ -13,7 +13,8 @@ import { FaRegEdit } from "react-icons/fa";
 import AttachFileComponent from './AttachFileComponent';
 import { LuTrash2 } from "react-icons/lu";
 
-const FeedbackItemPopup = ({ title, description, openShow, votes, id, onVoteChange, uploads, userEmail, onFeedbackUpdate}) => {
+
+const FeedbackItemPopup = ({ title, description, openShow, votes, id, onVoteChange, uploads, userEmail, onFeedbackUpdate, status, onStatusUpdate}) => {
   
   const [newTitle, setNewTitle] = useState(title);
   const [newDescription, setNewDescription] = useState(description);
@@ -22,9 +23,22 @@ const FeedbackItemPopup = ({ title, description, openShow, votes, id, onVoteChan
   const [isVotesLoading, setIsVotesLoading] = useState(false);
   const [isEditMode, setIsEditMode] = useState(false);
 
+  const [newstatus, setNewStatus] = useState(status || 'new'); 
   const { data: session } = useSession();
+  const isAdmin = session?.user?.email === 'sudhanshubsr.dev@gmail.com'
   const iVoted = votes?.some((vote) => vote.userEmail === session?.user?.email);
 
+  
+
+  // 
+  useEffect(() => {
+    if(newstatus === status){
+      return;
+    }
+    axios.put(`/api/feedback`,{feedbackId:id, title, description, uploads, userEmail, status:newstatus}).then(()=>{
+     onFeedbackUpdate({status:newstatus});
+    })
+  },[newstatus]);
 
   // Function to handle Vote Functionality
   const handleVoteClick = async () => {
@@ -79,11 +93,12 @@ const FeedbackItemPopup = ({ title, description, openShow, votes, id, onVoteChan
     catch(err){
       console.log(err);
   }
+  
 }
   return (
     <Popup title={''} setShow={openShow}>
       <div className='p-8 pb-2'>
-
+  
       {isEditMode &&(
         <>
         <input onChange={(e)=>setNewTitle(e.target.value)} className='border border-gray-300 p-2 mb-4 w-full' type="text" placeholder="Title" value={newTitle} />
@@ -110,7 +125,7 @@ const FeedbackItemPopup = ({ title, description, openShow, votes, id, onVoteChan
       {!isEditMode && (
         <>
         <h2 className='text-lg font-bold mb-2'>{title}</h2>
-        <p className='text-gray-600'>{description}</p>
+        <p className='text-gray-600'  dangerouslySetInnerHTML={{__html:description.replace(/\n/gi,"<br />")}}/>
 
         {uploads?.length > 0 && (
           <div className='mt-4'>
@@ -126,16 +141,32 @@ const FeedbackItemPopup = ({ title, description, openShow, votes, id, onVoteChan
       )}
         
 
-        <div className='flex justify-end px-8 py-2 border-b'>
+        <div className='flex justify-end px-8 py-2 border-b border-gray-300 mt-6'>
+        
         {!isEditMode && (
           <>
           {session?.user?.email === userEmail && (
             <Button onClick={handleFeedbackEdit}>
             <FaRegEdit />
-            <span className='ml-1'>Edit</span>
+            <span className='ml-1 bg-transparent '>Edit</span>
           </Button>
           )} 
           </>
+        )}
+        
+        {!isEditMode && isAdmin && (
+          
+          <select
+          onChange={(ev) => setNewStatus(ev.target.value)}
+          value={status}
+          className=" appearance-none bg-gray-100 border border-gray-300 rounded-md focus:outline-none focus:shadow-outline-blue focus:border-blue-300 text-sm mr-2 ml-1" 
+        >
+          <option value="new">new</option>
+          <option value="planned">planned</option>
+          <option value="in-progress">in progress</option>
+          <option value="complete">complete</option>
+          <option value="archived">archived</option>
+        </select>
         )}
         {isEditMode && (
           <>
@@ -144,6 +175,7 @@ const FeedbackItemPopup = ({ title, description, openShow, votes, id, onVoteChan
           <Button primary='true' onClick={handleSaveChangesButton}>Save Changes</Button>
           </>
         )}
+
 
         {!isEditMode && (
           <>

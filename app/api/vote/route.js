@@ -2,10 +2,29 @@ import { getServerSession } from "next-auth";
 import prisma from "../../../prisma/index.js";
 import { authOptions } from "../../utils/auth.js";
 
-// Error handling middleware
+
+
+
+
 function errorHandler(error) {
   console.error(error);
   throw new Error("An error occurred while processing your request.");
+}
+
+async function getVoteCount(feedbackId){
+  const voteCount = await prisma.vote.count({
+    where:{
+      feedbackId
+    }
+  })
+  await prisma.feedback.update({
+    where:{
+      id: feedbackId
+    },
+    data:{
+      voteCount: voteCount
+    }
+  })
 }
 
 export async function POST(request) {
@@ -31,7 +50,7 @@ export async function POST(request) {
           id: vote.id
         }
       })
-        
+      await getVoteCount(feedbackId);
       return Response.json({
         error: "You have already voted for this feedback",
       });
@@ -42,6 +61,7 @@ export async function POST(request) {
           userEmail,
         },
       });
+      await getVoteCount(feedbackId);
       return Response.json(voteDoc);
     }
   } catch (error) {
