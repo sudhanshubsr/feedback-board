@@ -1,12 +1,10 @@
 import React, { useState } from 'react';
-import Popup from './Popup';
-import { signIn } from 'next-auth/react';
 import Button from './Button';
 import { useSession } from 'next-auth/react';
 import axios from 'axios';
 import { MoonLoader } from 'react-spinners';
 import LoginPopup from './LoginPopup';
-import Trash from "./icons/Trash";
+
 
 const FeedbackItem = ({ title, description, openShow, votes, id, onVoteChange,status}) => {
   const [showLoginPopup, setShowLoginPopup] = useState(false);

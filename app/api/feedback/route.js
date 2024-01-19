@@ -5,7 +5,7 @@ import { authOptions } from '../../utils/auth.js'
 
 export async function POST(request) {
   const jsonbody = await request.json();
-  const { title, description, uploads} = jsonbody;
+  const { title, description, uploads,boardName} = jsonbody;
   const session =await getServerSession(authOptions)
   const userEmail = session.user.email;
   try{
@@ -15,6 +15,7 @@ export async function POST(request) {
       description,
       uploads,
       userEmail,
+      boardName
     },
   });
 
@@ -48,10 +49,10 @@ export async function GET(request) {
     // Get the search and sort parameters from the URL
     const searchPhrase = url.searchParams.get('search');
     const sort = url.searchParams.get('sort');
-
+    const boardName = url.searchParams.get('boardName');
 
     // Initialize an empty filter object
-    let filter = {};
+    let filter = {boardName};
 
     if(['in-progress', 'planned', 'complete','archived'].includes(sort)){
       filter.status = sort;
@@ -72,6 +73,7 @@ export async function GET(request) {
 
       // Update the filter object to include the search phrase and feedbackIds
       filter = {
+        boardName:boardName,
         OR: [
           { title: { contains: searchPhrase, mode: 'insensitive' } },
           { description: { contains: searchPhrase, mode: 'insensitive' } },

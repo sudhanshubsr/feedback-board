@@ -4,38 +4,47 @@ import axios from "axios";
 import { useSession } from "next-auth/react";
 import { useEffect, useState, useRef } from "react";
 import { debounce } from "lodash";
-import { MoonLoader } from "react-spinners";
 import { usePathname } from "next/navigation";
-import Button from "./Button";
-import FeedbackItem from "./FeedbackItem";
 import FeedbackItemModal from "./FeedbackItemModal";
 import FeedbackModal from "./FeedbackModal";
+import getPathname from "../utils/getPathname";
+import { feedbackOpenNeeded, fetchFeedback, postLoginActions } from "../utils/boardHelperFunc";
+import BoardHeader from "./BoardHeader";
+import { BoardBody } from "./BoardBody";
 
 export default function Board() {
   const [showFeedbackModalForm, setShowFeedbackModalForm] = useState(false);
   const [openFeedbackModal, setOpenFeedbackModal] = useState(false);
   const [votes, setVotes] = useState([]);
-  const [sort, setSort] = useState('votes');
+  const [sort, setSort] = useState('all');
   const [searchPhrase, setSearchPhrase] = useState('');
   const [feedbackFetchCount, setFeedbackFetchCount] = useState(0);
   const [feedbacks, setFeedbacks] = useState([]);
   const [fetchingFeedbacks, setFetchingFeedbacks] = useState(true);
   const searchPhraseRef = useRef('');
-  const sortValueRef = useRef('');
+  const sortValueRef = useRef('all');
   const debouncedFetchFeedbacksRef = useRef(debounce(() => getFeedbacks(), 500));
   const pathname = usePathname();
-
   const {data: session} = useSession();
-  const userEmail = session?.user?.email;
-  
+  const boardName = getPathname();
+
+
  // ! I got a issue here, as I am using debounced version of getFeedbacks function, it is not updating the sort value in the api call instaneously, it is taking the previous value of sort, so I am using useRef to store the value of sort and then using it in the api call to get the updated value of sort, this is a temporary solution, I will try to find a better solution for this
 
- useEffect(() => {
-  getFeedbacks()
-}, []);
+  //? This useEffect is used to get the feedbacks, it will run when the component mounts
+  useEffect(() => {
+    getFeedbacks()
+  }, []);
 
- useEffect(() => {
-  if(feedbackFetchCount === 0){
+
+  //? This useEffect is used to get the votes of the feedbacks, it will run when the feedbacks state changes
+  useEffect(() => {
+    getVotes();
+  }, [feedbacks]);
+
+  //? This useEffect is used to get the feedbacks when the user changes the sort value or search phrase, it will run when the sort or searchPhrase state changes
+  useEffect(() => {
+    if(feedbackFetchCount === 0){
     return;
   }
     sortValueRef.current = sort;
@@ -43,76 +52,42 @@ export default function Board() {
     debouncedFetchFeedbacksRef.current();
 }, [sort, searchPhrase]);
 
+  //? This useEffect is used to update the url when the user clicks on the feedback item, it will update the url with the feedback item id, so that the user can share the feedback item link with others and when they click on the link, it will open the feedback modal with the feedback item data
+
   useEffect(() => {
     if(feedbackFetchCount === 0){
       return;
     }
-    if (openFeedbackModal) {
-      window.history.pushState({}, null, `/feedback/${openFeedbackModal.id}`);
-    } else {
-      window.history.pushState({}, null, `/`);
-    }
+    const url = openFeedbackModal ? `/board/${boardName}/feedback/${openFeedbackModal.id}` : `/board/${boardName}`;
+    window.history.pushState({}, '', url);
   }, [openFeedbackModal]);
 
-  useEffect(() => {
-
-    if (feedbackFetchCount == 1 && /^\/feedback\/[0-9]+/.test(pathname)) {
-      const feedbackId = pathname.split('/')[2];
-      axios.get('/api/feedback?feedbackId=' + feedbackId)
-        .then((response) => {
-          setOpenFeedbackModal(response.data);
-        });
-    }
-  }, [pathname]);
+  //? This useEffect is used to open the feedback modal when the user clicks on the feedback item link shared by someone, it will open the feedback modal with the feedback item data
 
   useEffect(() => {
-    getVotes();
-  }, [feedbacks]);
-
-  useEffect(() => {
-    if (userEmail) {
-      handleLocalStorageActions();
-    }
-  }, [userEmail]);
-
-  const handleLocalStorageActions = () => {
-    const feedbackToVote = localStorage.getItem("feedback-id to vote");
-    if (feedbackToVote) {
-      axios.post('/api/vote', { feedbackToVote })
-        .then((res) => {
-          localStorage.removeItem("feedback-id to vote");
-          getVotes();
-        });
-    }
-
-  const feedbackToPost = localStorage.getItem("feedbackToPost");
-  if (feedbackToPost) {
-    axios.post('/api/feedback', JSON.parse(feedbackToPost))
-      .then(async (res) => {
-        await getFeedbacks();
-        setOpenFeedbackModal(res.data);
-        localStorage.removeItem("feedbackToPost");
+    const idToOpen = feedbackOpenNeeded(feedbackFetchCount, pathname);
+    if (idToOpen) {
+      fetchFeedback(idToOpen).then((feedback) => {
+        setOpenFeedbackModal(feedback);
       });
-  }
+    }
+  }, [feedbackFetchCount]);
 
-  const commentToPost = localStorage.getItem("commentToPost");
-  if (commentToPost) {
-    const commentData = JSON.parse(commentToPost);
-    axios.post('/api/comment', commentData)
-      .then(() => {
-        axios.get('/api/feedback?feedbackId=' + commentData.feedbackId)
-          .then((res) => {
-            setOpenFeedbackModal(res.data);
-            localStorage.removeItem("commentToPost");
-          });
-      });
-  }
-};
+
+  //? This useEffect is used to submit the feedack, vote, or comment after user logsIn, if there is any data in the localStorage, it will submit the data to the server and then clear the localStorage
+
+  useEffect(() => {
+    if(!session?.user?.email){
+      return
+    }
+    postLoginActions(getVotes, getFeedbacks, openFeedbackItem)
+  }, [session]);
+
 
   const getFeedbacks = async () => {
     try {
       setFetchingFeedbacks(true);
-      const res = await axios.get(`/api/feedback?sort=${sortValueRef.current}&search=${searchPhraseRef.current}`);
+      const res = await axios.get(`/api/feedback?sort=${sortValueRef.current}&search=${searchPhraseRef.current}&boardName=${boardName}`);
       setFeedbacks(res.data);
       setFeedbackFetchCount((prevCount) => prevCount + 1);
       setFetchingFeedbacks(false);
@@ -141,84 +116,18 @@ export default function Board() {
 
   const handleFeedbackUpdate = async (updatedFeedback) => {
     setOpenFeedbackModal((prevData) => ({ ...prevData, ...updatedFeedback }));
-    if (updatedFeedback.status) {
-      await getFeedbacks();
-    }
+    getFeedbacks();
   };
 
+
   return (
-    <>
     <main className="bg-white md:max-w-2xl mx-auto md:shadow-lg md:rounded -lg md:mt-8 overflow-hidden mb-3">
-      <div className="bg-gradient-to-r from-cyan-400 to-blue-400 p-8">
-        <h1 className="font-bold text-xl">VoxBoard</h1>
-        <p className="text-opacity-90 text-slate-700">
-          Elevate Your Insights, Unleash Collective Wisdom
-        </p>
-      </div>
-
-      <div className="bg-gray-100 md:px-6 px-3 py-4 flex border-b">
-          
-        <div className="flex items-center gap-2">
-          <select
-          onChange={(ev) => {setSort(ev.target.value);
-          }}
-          className="block appearance-none bg-white border border-gray-300 py-2 px-1 rounded-md leading-tight focus:outline-none focus:shadow-outline-blue focus:border-blue-300 text-sm" 
-        >
-          <option value="votes">Most-Voted</option>
-          <option value="latest">Latest</option>
-          <option value="oldest">Oldest</option>
-          <option value="planned">Planned</option>
-          <option value="in-progress">In Progress</option>
-          <option value="complete">Completed</option>
-          <option value="archived">Archived</option>
-          <option value="all">All</option> {/* Exprimental Feature  */}
-
-        </select>
-        <div>
-          <input value={searchPhrase} onChange={ev => setSearchPhrase(ev.target.value)} type="text" placeholder="Search" className="border border-gray-300 py-2 px-1 rounded-md leading-tight focus:outline-none focus:shadow-outline-blue focus:border-blue-300 text-sm"/>
-        </div>
-        </div>
-        <div className="grow"></div>
-        {/* Button to open the feedback modal form */}
-        <Button
-          onClick={openFeedbackModalForm}
-          primary="true"
-          className="bg-blue-500 py-2 px-4 rounded-md text-white text-opacity-90"
-        >
-          Make a Suggestion
-        </Button>
-      </div>
-
-      {/* Render loading state if fetchingFeedbacks is true */}
-      {fetchingFeedbacks && (
-        <div className="relative left-1/2 transform -translate-x-10">
-        <MoonLoader color='#1D4ED8' size={40} className="m-5" />
-        </div>
-        
-      )}
-      {!fetchingFeedbacks && (
-          <div className="px-8">
-          {/* Render feedback items */}
-          {feedbacks.length === 0 && !fetchingFeedbacks ? (
-            <div className="text-center py-8">Nothing Found</div>
-          ): null}
-          {feedbacks.map((feedback) => (
-            <FeedbackItem
-              {...feedback}
-              key={feedback.id}
-              onVoteChange={getVotes}
-              openShow={() => openFeedbackItem(feedback)}
-              votes={votes.filter((vote) => vote.feedbackId === feedback.id)}
-            />
-          ))}
-        </div>
-      )}
+      <BoardHeader openFeedbackModalForm={openFeedbackModalForm} setSort={setSort} setSearchPhrase={setSearchPhrase} searchPhrase={searchPhrase} />
       
-
-      {/* Render feedback modal form if showFeedbackModalForm is true */}
+      <BoardBody feedbacks={feedbacks} votes={votes} openFeedbackItem={openFeedbackItem} getVotes={getVotes} fetchingFeedbacks={fetchingFeedbacks}/>
+     
       {showFeedbackModalForm && <FeedbackModal setShow={setShowFeedbackModalForm} onCreate={getFeedbacks} />}
 
-      {/* Render feedback item modal if openFeedbackModal is true */}
       {openFeedbackModal && (
         <FeedbackItemModal
           {...openFeedbackModal}
@@ -230,7 +139,5 @@ export default function Board() {
         />
       )}
     </main>
-    
- </>
   );
 }

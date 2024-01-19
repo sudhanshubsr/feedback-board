@@ -6,6 +6,7 @@ import Attachment from './Attachment';
 import AttachFileComponent from './AttachFileComponent';
 import { useSession } from 'next-auth/react';
 import LoginPopup from './LoginPopup';
+import getPathname from '../utils/getPathname';
 
 export default function FeedbackModal({ setShow, onCreate }) {
   const [title, setTitle] = useState('');
@@ -13,20 +14,20 @@ export default function FeedbackModal({ setShow, onCreate }) {
   const [uploads, setUploads] = useState([]);
   const [showLoginPopup, setShowLoginPopup] = useState(false);
   const { data: session } = useSession();
-
-
+  const boardName = getPathname();
+  
   // Function to handle the click event for creating a post
   const handleCreatePostClick = (e) => {
     e.preventDefault();
     if (!session) {
       // If user is not logged in, save the post to create later
-      localStorage.setItem('feedbackToPost', JSON.stringify({ title, description, uploads}));
+      localStorage.setItem('feedbackToPost', JSON.stringify({ title, description, uploads, boardName}));
       setShowLoginPopup(true);
     } else {
       // If user is logged in, create the post
       localStorage.removeItem('feedbackToPost');
       axios
-        .post('/api/feedback', { title, description, uploads})
+        .post('/api/feedback', { title, description, uploads,boardName})
         .then(() => {
           setShow(false);
           onCreate();
