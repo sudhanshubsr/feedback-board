@@ -56,14 +56,14 @@ export default function Board() {
 
   useEffect(() => {
 
-    if (feedbackFetchCount <= 1 && /^\/feedback\/[0-9]+/.test(pathname)) {
+    if (feedbackFetchCount == 1 && /^\/feedback\/[0-9]+/.test(pathname)) {
       const feedbackId = pathname.split('/')[2];
       axios.get('/api/feedback?feedbackId=' + feedbackId)
         .then((response) => {
           setOpenFeedbackModal(response.data);
         });
     }
-  }, [feedbackFetchCount, pathname]);
+  }, [pathname]);
 
   useEffect(() => {
     getVotes();
@@ -156,31 +156,28 @@ export default function Board() {
         </p>
       </div>
 
-  <div className="bg-gray-100 md:px-6 px-3 py-4 flex border-b">
-  
-  <div className="flex items-center gap-2">
-  <select
-  onChange={(ev) => {setSort(ev.target.value);
-  }}
-  className="block appearance-none bg-white border border-gray-300 py-2 px-1 rounded-md leading-tight focus:outline-none focus:shadow-outline-blue focus:border-blue-300 text-sm" 
->
-  <option value="votes">Most-Voted</option>
-  <option value="latest">Latest</option>
-  <option value="oldest">Oldest</option>
-  <option value="planned">Planned</option>
-  <option value="in-progress">In Progress</option>
-  <option value="complete">Completed</option>
-  <option value="archived">Archived</option>
-  <option value="all">All</option> {/* Exprimental Feature  */}
+      <div className="bg-gray-100 md:px-6 px-3 py-4 flex border-b">
+          
+        <div className="flex items-center gap-2">
+          <select
+          onChange={(ev) => {setSort(ev.target.value);
+          }}
+          className="block appearance-none bg-white border border-gray-300 py-2 px-1 rounded-md leading-tight focus:outline-none focus:shadow-outline-blue focus:border-blue-300 text-sm" 
+        >
+          <option value="votes">Most-Voted</option>
+          <option value="latest">Latest</option>
+          <option value="oldest">Oldest</option>
+          <option value="planned">Planned</option>
+          <option value="in-progress">In Progress</option>
+          <option value="complete">Completed</option>
+          <option value="archived">Archived</option>
+          <option value="all">All</option> {/* Exprimental Feature  */}
 
-</select>
-<div>
-  <input value={searchPhrase} onChange={ev => setSearchPhrase(ev.target.value)} type="text" placeholder="Search" className="border border-gray-300 py-2 px-1 rounded-md leading-tight focus:outline-none focus:shadow-outline-blue focus:border-blue-300 text-sm"/>
-</div>
-</div>
-
-
-        
+        </select>
+        <div>
+          <input value={searchPhrase} onChange={ev => setSearchPhrase(ev.target.value)} type="text" placeholder="Search" className="border border-gray-300 py-2 px-1 rounded-md leading-tight focus:outline-none focus:shadow-outline-blue focus:border-blue-300 text-sm"/>
+        </div>
+        </div>
         <div className="grow"></div>
         {/* Button to open the feedback modal form */}
         <Button

@@ -1,4 +1,5 @@
 export default function Popup({ setShow, children, title, narrow }) {
+  
   function close(ev) {
     ev.preventDefault();
     ev.stopPropagation();

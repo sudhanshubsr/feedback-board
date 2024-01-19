@@ -4,6 +4,7 @@ import React from 'react';
 import { signIn } from 'next-auth/react';
 import Popup from './Popup';
 import { Github } from 'lucide-react';
+import { IoLogoGoogle } from 'react-icons/io5';
 
 const LoginPopup = ({ setShowLoginPopup }) => {
   const [email, setEmail] = React.useState('');
@@ -13,7 +14,6 @@ const LoginPopup = ({ setShowLoginPopup }) => {
     e.preventDefault();
     const signInResult = await signIn('email', {
       email,
-      callbackUrl: `${window.location.origin}`,
       redirect: false,
     });
 
@@ -21,16 +21,18 @@ const LoginPopup = ({ setShowLoginPopup }) => {
     if (!signInResult?.ok) {
       setEmail('');
     } else {
-      setShowLoginPopup(false);
+      setShowLoginPopup(false); 
     }
   }
 
   // Function to handle Github login
-  const handleGithubLogin = (e) => {
+  const handleGithubLogin = async (e) => {
     e.preventDefault();
-    signIn('github', {
-      callbackUrl: `${window.location.origin}`,
-    });
+    await signIn('github');
+  };
+  const handleGoogleLogin = async (e) => {
+    e.preventDefault();
+    await signIn('google');
   };
 
   return (
@@ -61,9 +63,9 @@ const LoginPopup = ({ setShowLoginPopup }) => {
         </div>
         <div className="flex gap-4 justify-center p-2 mt-1">
           {/* Uncomment if you want to use Google login */}
-          {/* <button onClick={handleGoogleLogin} className="flex gap-2 items-center text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
+          <button onClick={handleGoogleLogin} className="flex gap-2 items-center text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
             Login with Google <IoLogoGoogle className="w-5 h-5" />
-          </button> */}
+          </button>
 
           <button
             onClick={handleGithubLogin}

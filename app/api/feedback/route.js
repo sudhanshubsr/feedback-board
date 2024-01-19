@@ -8,6 +8,7 @@ export async function POST(request) {
   const { title, description, uploads} = jsonbody;
   const session =await getServerSession(authOptions)
   const userEmail = session.user.email;
+  try{
   const feedbackDoc = await prisma.feedback.create({
     data: {
       title,
@@ -16,7 +17,12 @@ export async function POST(request) {
       userEmail,
     },
   });
+
   return Response.json(feedbackDoc);
+}catch(error){
+  console.log(error);
+}
+  
 }
 
 
@@ -42,6 +48,7 @@ export async function GET(request) {
     // Get the search and sort parameters from the URL
     const searchPhrase = url.searchParams.get('search');
     const sort = url.searchParams.get('sort');
+
 
     // Initialize an empty filter object
     let filter = {};

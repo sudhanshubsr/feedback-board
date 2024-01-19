@@ -12,7 +12,6 @@ export default function FeedbackModal({ setShow, onCreate }) {
   const [description, setDescription] = useState('');
   const [uploads, setUploads] = useState([]);
   const [showLoginPopup, setShowLoginPopup] = useState(false);
-
   const { data: session } = useSession();
 
 
@@ -25,6 +24,7 @@ export default function FeedbackModal({ setShow, onCreate }) {
       setShowLoginPopup(true);
     } else {
       // If user is logged in, create the post
+      localStorage.removeItem('feedbackToPost');
       axios
         .post('/api/feedback', { title, description, uploads})
         .then(() => {
@@ -79,7 +79,7 @@ export default function FeedbackModal({ setShow, onCreate }) {
             <label className='block mt-2 mb-1 text-gray-700'>Attachments</label>
             <div className='flex gap-2 mt-2'>
               {uploads.map((link) => (
-                <Attachment key={link.id} link={link} handleRemoveFileClick={(e, link) => handleRemoveFileClick(e, link)} showRemoveButton={true} />
+                <Attachment key={link} link={link} handleRemoveFileClick={(e, link) => handleRemoveFileClick(e, link)} showRemoveButton={true} />
               ))}
             </div>
           </div>

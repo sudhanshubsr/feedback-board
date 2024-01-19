@@ -21,6 +21,7 @@ const FeedbackItem = ({ title, description, openShow, votes, id, onVoteChange,st
       setShowLoginPopup(true);
     } else {
       try {
+        localStorage.removeItem("feedback-id to vote");
         setIsVotesLoading(true);
         await axios.post('/api/vote', { feedbackId: id });
         await onVoteChange();

@@ -35,6 +35,7 @@ const FeedbackItemPopupCommentsForm = ({ feedbackId, onCommentCreate }) => {
       setShowLoginPopup(true);
     } else {
       // If user is logged in, post the comment
+      localStorage.removeItem('commentToPost');
       axios
         .post('/api/comment', {
           text: commentText,
@@ -69,7 +70,7 @@ const FeedbackItemPopupCommentsForm = ({ feedbackId, onCommentCreate }) => {
           <label className='block mt-2 mb-1 text-gray-700'>Files: </label>
           <div className='flex gap-2 mt-2'>
             {uploads.map((link) => (
-              <Attachment key={link.index} link={link} handleRemoveFileClick={(e, link) => handleRemoveFileClick(e, link)} showRemoveButton={true} />
+              <Attachment key={link} link={link} handleRemoveFileClick={(e, link) => handleRemoveFileClick(e, link)} showRemoveButton={true} />
             ))}
           </div>
         </div>
