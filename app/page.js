@@ -1,12 +1,16 @@
 'use client';
 import { SessionProvider } from "next-auth/react";
 import React from 'react'
+import HomeNavBottom from "./components/HomeNavBottom";
 
 export default function Home(){
   
   return (
     <SessionProvider>
-        <h1>Home</h1>
+      <main>
+          
+      </main>
+      <HomeNavBottom />
     </SessionProvider>
   )
 }

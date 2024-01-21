@@ -2,7 +2,31 @@
 @tailwind components;
 @tailwind utilities;
 
+
+*,*::after, *::before{
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+:root{
+  --primary: rgba(40, 115, 121, 100);
+  --primary-light: rgba(65,172,181, 100);
+  --secondary: rgba(204,242,219,100);
+  --secondary-light: rgba(230,250,241,100);
+  --black: rgba(0,0,0,100);
+  --white: rgba(255,255,255,100);
+  --font-large: 2rem;
+  --font-medium: 1.5rem;
+  --font-small: 1rem;
+}
+
 body{
-  @apply bg-slate-200;
   font-family: 'Poppins';
+  background-color: var(--secondary-light);
+  display: grid;
+  grid-template-columns: repeat(12, 1fr);
+  grid-template-rows: repeat(auto, 1fr);
+  gap: 8px;
+
 }
