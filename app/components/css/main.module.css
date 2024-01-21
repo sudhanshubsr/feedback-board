@@ -1,0 +1,77 @@
+.maincontainer{
+    display: grid;
+    grid-template-columns: (12, 1fr);
+    grid-template-rows: (auto, 1fr);
+    gap: 8px;
+}
+
+.header{
+    grid-column: 1/12;
+    grid-row: 1/2;
+    display: flex;
+    flex-wrap: nowrap;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1em;
+}
+.headerImage{
+    width: 10em;
+}
+.headerAvatar{
+    width: 48px;
+    height: 48px;
+}
+
+.mobilenavbar{
+    column-span: all;
+    position: fixed;
+    bottom: 0;
+    margin: 0 auto;
+    width: 100%;
+    padding:1em;
+}
+
+
+.headerHeading{
+    grid-column: 3/10;
+    grid-row: 2/3;
+    text-align: center;
+    font-size: 1.5rem;
+    margin-top: 2em;
+    position: relative;
+    left: 0.5em;
+}
+.headerHeading span{
+    color: var(--primary);
+    font-size: 4rem;
+    font-weight: 700;
+
+}
+.headerSubText{
+    grid-column: 1/12;
+    grid-row: 3/4;
+    text-align: center;
+}
+
+.headerButton{
+    grid-row: 4/5;
+    grid-column: 5/8;
+    background-color: var(--secondary);
+    padding: 0.5em 1em;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 0.5em;
+    border-radius: 0.5em;
+    margin-top: 1em;
+}
+
+.jumbotronImage{
+    grid-column: 1/10;
+    grid-row: 6/13;
+}
+.jumbotronCircle{
+    grid-column:7/12;
+    grid-row: 9/22;
+    z-index: -1;
+}

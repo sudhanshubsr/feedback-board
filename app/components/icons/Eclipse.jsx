@@ -1,0 +1,18 @@
+import React from 'react'
+
+const Eclipse = () => {
+  return (
+    <svg width="179" height="208" viewBox="0 0 179 208" fill="none" xmlns="http://www.w3.org/2000/svg">
+<ellipse id="Ellipse 1" cx="105.5" cy="104" rx="105.5" ry="104" fill="url(#paint0_linear_108_325)"/>
+<defs>
+<linearGradient id="paint0_linear_108_325" x1="105.5" y1="1.68063e-06" x2="270.148" y2="223.68" gradientUnits="userSpaceOnUse">
+<stop offset="0.0199606" stopColor="#CCF2DB"/>
+<stop offset="1" stopColor="#287379"/>
+</linearGradient>
+</defs>
+</svg>
+
+  )
+}
+
+export default Eclipse
