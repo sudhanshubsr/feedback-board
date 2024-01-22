@@ -11,10 +11,10 @@ const HomeNavBottom = () => {
 
     <>
       <div className={styles.navbuttonscontainer}>
-        <div><a href='#'><RiHome3Fill /></a></div>
-        <div><a href='#'><MdCurrencyRupee /></a></div>
-        <div><a href='#'><MdOutlineHelpOutline /></a></div>
-        <div><a href='#'><RiAccountCircleLine /></a></div>
+        <div><a href='/'><RiHome3Fill /></a></div>
+        <div><a href='/pricing'><MdCurrencyRupee /></a></div>
+        <div><a href='/help'><MdOutlineHelpOutline /></a></div>
+        <div><a href='/account'><RiAccountCircleLine /></a></div>
       </div>
     </>
 

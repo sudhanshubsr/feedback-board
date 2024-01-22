@@ -3,16 +3,24 @@
     display: grid;
     grid-template-columns: repeat(4, 1fr);
     grid-template-rows: repeat(auto, 1fr);
-    gap: 4em;
-    padding: 1em 2em;
+    gap: 3em;
+    padding: 1em 1.5em;
     border-radius: 2em;
     color: var(--primary);
+    place-items: center;
 }
 .navbuttonscontainer div{
-    font-size: 2em;
+    font-size: 1.8em;
 }
 .navbuttonscontainer div:hover{
     cursor: pointer;
-    transform: scale(1.2);
-    transition: all 0.1s ease-in-out;
 }
+
+.mobilenavbar{
+    column-span: all;
+    position: fixed;
+    bottom: 0;
+    margin: 0 auto;
+    width: 100%;
+    padding: 0.3em;
+  }

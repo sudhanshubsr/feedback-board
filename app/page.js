@@ -27,11 +27,6 @@ export default function Home(){
       <div className={styles.headerSubText}>
         <p>Experience a seamless, collaborative solution for user requests. Say goodbye to outdated spreadsheets and chaotic boards. Empower your customers, gain priceless insights</p>
       </div>
-
-      <div className={styles.mobilenavbar}>
-      <HomeNavBottom />
-      </div>
-
       <div className={styles.headerButton}>
         <button>Get Started </button>
         <HiMiniArrowLongRight />
@@ -40,10 +35,10 @@ export default function Home(){
         <div className={styles.jumbotronImage}>
           <img src="https://s3-alpha-sig.figma.com/img/b03e/7209/0c1c9995db089f7719b4df6efa7803a7?Expires=1706486400&Key-Pair-Id=APKAQ4GOSFWCVNEHN3O4&Signature=evcdFGPdBdM8oFskcZP3CBiJknoeDDysXE580PZ73xcPlzk6W4VlDrm1kf8aOTmUy4vjtRkL92sW2~DkwX9~7t1G0~bezKsmJHHzPSe59pIc5uSryu4V3cUdhhosqE9wDENh15msCqyBoq2XNKwLu09Lo2K55ZKXHprFQMRcFCFREuWdLdhcFW5iTJvrt76nl5ZHEWnWq7xT9AN8gSE5Nc8V6LGkmjSuVdpJtxAFeNOL~hEkuBH6fCnnufnnPTCvIhIOCi6FADTFmiidScSYH4tVZOPb9ImGbt7BHRutnZ9bH8RgHPVt6RddjfIAjw70KMvygWYwEkvQEHFVBPacBg__" />
         </div>
-        {/* <div className={styles.jumbotronText}>
+        <div className={styles.jumbotronText}>
           <h1>Keep your users in the loop</h1>
           <p>Give your users a voice. Let them vote on feature requests and bug reports so you can build the right product.</p>
-        </div> */}
+        </div>
         <div className={styles.jumbotronCircle}>
           <Eclipse />
         </div>
