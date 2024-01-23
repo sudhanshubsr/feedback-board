@@ -8,6 +8,7 @@
     border-radius: 2em;
     color: var(--primary);
     place-items: center;
+    max-width: 500px;
 }
 .navbuttonscontainer div{
     font-size: 1.8em;
@@ -17,10 +18,30 @@
 }
 
 .mobilenavbar{
+    display: flex;
+    justify-content: center;
     column-span: all;
     position: fixed;
     bottom: 0;
-    margin: 0 auto;
     width: 100%;
     padding: 0.3em;
   }
+
+
+
+.header{
+    grid-column: 1/12;
+    grid-row: 1/2;
+    display: flex;
+    flex-wrap: nowrap;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1em;
+}
+.headerImage{
+    width: 10em;
+}
+.headerAvatar{
+    width: 48px;
+    height: 48px;
+}

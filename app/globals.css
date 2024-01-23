@@ -26,5 +26,6 @@
 body{
   font-family: 'Poppins';
   background-color: var(--secondary-light);
+  background: radial-gradient(circle, rgba(204,242,219,1) 0%, rgba(230,250,241,1) 10%,rgba(255,255,255,1) 100%);
 
 }
