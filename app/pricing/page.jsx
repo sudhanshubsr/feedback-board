@@ -66,7 +66,7 @@ const PricingPage = () => {
 
 const FeatureItem = ({ text }) => (
   <div className="flex items-center gap-2 mb-2">
-    <div className="bg-[--primary] w-5 h-5 rounded-full flex items-center justify-center">✓</div>
+    <div className="bg-[--primary] w-5 h-5 rounded-full flex items-center justify-center text-white">✓</div>
     <span>{text}</span>
   </div>
 );

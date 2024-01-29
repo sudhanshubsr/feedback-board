@@ -2,7 +2,7 @@
 import FaqQuestion from "../components/FaqQuestions";
 
 export default function HelpPage() {
-  const email = 'support@feedbackboards.com';
+  const email = <b>support@feedbackboards.com</b>
   return (
     <div className="mt-16 mb-40">
       <h1 className="text-center text-4xl mb-6">Help Center</h1>

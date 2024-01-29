@@ -8,7 +8,7 @@ export default function FaqQuestion({question, children}) {
   return (
     <div className="rounded-lg overflow-hidden my-4 w-full max-w-[700px] ">
       <button
-        className="rounded flex gap-2 items-center bg-indigo-300 bg-opacity-50 md:text-xl p-4 cursor-pointer w-full"
+        className="rounded flex gap-2 items-center bg-[--secondary] bg-opacity-50 md:text-xl p-4 cursor-pointer w-full"
         onClick={() => setIsOpen(prev => !prev)}
       >
         {!isOpen && (
@@ -20,7 +20,7 @@ export default function FaqQuestion({question, children}) {
         {question}
       </button>
       {isOpen && (
-        <div className="bg-indigo-200 max-w-[700px] bg-opacity-30 p-4 text-gray-600">
+        <div className="bg-[--secondary-light] max-w-[700px] bg-opacity-30 p-4 text-gray-600">
           {children}
         </div>
       )}
