@@ -2,6 +2,7 @@ import React from 'react';
 import styles from '../components/css/PricingCard.module.css';
 import Eclipse from '../components/icons/Eclipse';
 import EclipseSmallBalls from '../components/icons/EclipseSmallBalls';
+
 const PricingPage = () => {
   return (
     <section className="my-16 flex-col justify-center items-center">
@@ -15,13 +16,13 @@ const PricingPage = () => {
           <FeatureItem text="Unlimited Admins" />
         </div>
         <div className={styles.eclipseContainer}>
-            <EclipseSmallBalls />
+          <EclipseSmallBalls />
         </div>
       </div>
 
       <div className={styles.upgradeButtonContainer}>
         <div className={styles.upgradeButton}>
-          <button className="bg-[--primary] text-white px-4 py-2 rounded-lg font-bold">
+          <button className="bg-gradient-to-br from-[--primary] to-[--primary-light] text-white px-4 py-2 rounded-lg font-bold">
             Upgrade to Premium
           </button>
         </div>
@@ -31,7 +32,7 @@ const PricingPage = () => {
         <div className={styles.pricingCardStyle}>
           <Eclipse />
         </div>
-          
+
         <div className={styles.pricingCard}>
           <PricingCard
             title="Free Forever"
@@ -57,8 +58,7 @@ const PricingPage = () => {
               'Unlimited users',
             ]}
           />
-      </div>
-
+        </div>
       </div>
     </section>
   );
@@ -72,25 +72,31 @@ const FeatureItem = ({ text }) => (
 );
 
 const PricingCard = ({ title, description, price, features }) => (
-  <div className={styles.pricingCardHeader}>
-    <div className={styles.cardText}>
-      <div className="cardheader">
-      <h2 className="text-2xl font-bold mb-2">{title}</h2>
-      <p className="text-gray-500 text-sm mb-4">{description}</p>
-      </div>
-      <div className="flex justify-center md:justify-start mt-5">
-        <span className="text-5xl font-bold">{price}</span>
-        <span className="text-gray-500 text-sm self-end ml-1">/month</span>
-      </div>
+  <div className="border text-card-foreground flex flex-col md:flex-row bg-white rounded-lg shadow-lg overflow-hidden max-w-full mx-auto" data-v0-t="card">
+    <div className="flex-1 p-6 md:p-8 bg-gradient-to-br from-[--secondary] to-[--primary-light] text-white">
+      <h2 className="text-2xl md:text-3xl font-bold">{title}</h2>
+      <p className="text-4xl md:text-5xl font-extrabold my-4">{price}</p>
+      <p className="text-sm md:text-base opacity-70">{description}</p>
     </div>
-    <ul className="text-sm text-gray-500 mt-4">
+    <div className="flex-1 p-6 md:p-8 space-y-4">
       {features.map((feature, index) => (
-        <li key={index} className="flex items-center gap-2 mb-3">
-          <div className="bg-[--primary] w-5 h-5 rounded-full flex items-center text-white justify-center">✓</div>
-          {feature}
-        </li>
+        <FeatureCheckbox key={index} label={feature} />
       ))}
-    </ul>
+    </div>
+  </div>
+);
+
+const FeatureCheckbox = ({ label }) => (
+  <div className="flex items-center space-x-2">
+    <input
+      type="checkbox"
+      disabled
+      checked
+      className="peer h-4 w-4 shrink-0 rounded-sm border bg-[--primary] ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset checked:bg-[--primary] checked:border-transparent checked:rounded-sm "
+    />
+    <label className="font-medium peer-disabled:cursor-not-allowed peer-disabled:opacity-70 text-sm md:text-base " htmlFor={label}>
+      {label}
+    </label>
   </div>
 );
 
