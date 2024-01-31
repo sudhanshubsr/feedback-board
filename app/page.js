@@ -1,18 +1,14 @@
 'use client'
-import { SessionProvider } from "next-auth/react";
 import React from 'react'
 import { HiMiniArrowLongRight } from "react-icons/hi2";
-
+import { signIn } from 'next-auth/react'
 import styles from './components/css/main.module.css'
 import Eclipse from "./components/icons/Eclipse";
 import Link  from "next/link"
 export default function Home(){
-  
+
   return (
-    <SessionProvider>
       <main className={styles.maincontainer}>
-
-
       <div className = {styles.headerHeading}>
         <h1>Your users will love <span>VoxBoards</span></h1>
       </div>
@@ -20,7 +16,7 @@ export default function Home(){
         <p>Experience a seamless, collaborative solution for user requests. Say goodbye to outdated spreadsheets and chaotic boards. Empower your customers, gain priceless insights</p>
       </div>
       <div className={styles.headerButton}>
-        <button><Link href='/account'> Get Started</Link> </button>
+        <button><Link href='/login'> Get Started</Link> </button>
         <HiMiniArrowLongRight />
       </div>
       
@@ -40,8 +36,7 @@ export default function Home(){
           </div>
         </div>
       </main>
-      
-    </SessionProvider>
+
   )
 }
 

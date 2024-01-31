@@ -51,11 +51,11 @@ const PricingPage = () => {
             description="More control and insights"
             price="$19.9"
             features={[
-              '1 board',
-              'Single sign-on',
-              'Unlimited admins',
-              'Unlimited feedbacks',
-              'Unlimited users',
+              'Everything in Free',
+              'Unlimited boards',
+              'Invite-only boards',
+              'Password-protected boards',
+              'Priority support',
             ]}
           />
         </div>
@@ -72,7 +72,7 @@ const FeatureItem = ({ text }) => (
 );
 
 const PricingCard = ({ title, description, price, features }) => (
-  <div className="border text-card-foreground flex flex-col md:flex-row bg-white rounded-lg shadow-lg overflow-hidden max-w-full mx-auto" data-v0-t="card">
+  <div className="border text-card-foreground  bg-white flex flex-row md:flex-row  rounded-lg shadow-lg overflow-hidden max-w-full mx-auto" data-v0-t="card">
     <div className="flex-1 p-6 md:p-8 bg-gradient-to-br from-[--secondary] to-[--primary-light] text-white">
       <h2 className="text-2xl md:text-3xl font-bold">{title}</h2>
       <p className="text-4xl md:text-5xl font-extrabold my-4">{price}</p>

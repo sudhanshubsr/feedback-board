@@ -41,7 +41,20 @@
 .headerImage{
     width: 10em;
 }
+.headerAvatarContainer{
+    display: flex;
+    /* position: relative; */
+}
+
 .headerAvatar{
     width: 48px;
     height: 48px;
+    position: relative;
+}
+
+.signoutpopOver{
+    position: absolute;
+    right: 10px;
+    top: 70px;
+    z-index: 1000;
 }
