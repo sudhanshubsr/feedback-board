@@ -1,10 +1,17 @@
 'use client';
 import React from 'react';
-import { signIn } from 'next-auth/react';
+import { signIn, useSession } from 'next-auth/react';
+import { useRouter } from 'next/navigation';
 const AccountPage = () => {
+  const {data:session, status} = useSession();
+  const router = useRouter();
+  if(status === 'authenticated'){
+    router.push('/account');
+  }
+
   const handleGoogleSignin = async(e)=>{
     e.preventDefault();
-    await signIn("google", {callbackUrl: "http://localhost:3000/"});
+    await signIn("google", {callbackUrl: "/account"});
   }
   return (
     <>
@@ -26,7 +33,7 @@ const AccountPage = () => {
                 </div>
                 <label htmlFor="email" className="mb-2 text-sm text-start text-grey-900">Email*</label>
                 <input id="email" type="email" placeholder="
-                Enter your Email" className="flex items-center md:w-full px-5 py-4 mr-2 text-sm font-medium outline-none focus:bg-grey-400 mb-7 placeholder:text-grey-700 bg-grey-200 text-dark-grey-900 rounded-2xl"/>
+                Enter your Email" className="flex items-center md:w-full px-5 py-4 mr-2 text-sm font-medium outline-none focus:outline-none mb-7 placeholder:text-grey-700 bg-grey-200 text-dark-grey-900 rounded-2xl"/>
           
                 <button className="w-96 px-6 py-5 mb-5 text-sm font-bold leading-none text-white transition duration-300 md:w-96 rounded-2xl bg-[--primary] ">Login With Email</button>
               </form>

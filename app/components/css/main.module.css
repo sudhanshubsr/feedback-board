@@ -5,7 +5,25 @@
         align-items: center;
         max-width: 100vw;
     }
-    
+    .secondMaincontainer{
+        display: flex;
+        /* border: 1px solid red; */
+        width: 100%;
+        justify-content: space-around;
+        height: 82vh;
+        align-items: center;
+        margin-top: -1em;
+ 
+    }
+    .jumbotron{
+        /* border: 1px solid black; */
+        margin-left: 5em;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: flex-start;
+        margin-top: -1em;
+    }
     .headerHeading{
         font-size: 3rem;
         font-weight: 700;
@@ -23,14 +41,14 @@
     }
     .headerSubText{
         font-size: 1.5rem;
-        margin-top: 1em;
+        margin-top: 1.2em;
         margin-bottom: 1em;
         text-align: center;
         max-width: 600px;
     }
     
     .headerButton{
-        background-color: var(--secondary);
+        background: linear-gradient(225deg, #e6e8e6ff, #ffffffff, #ced0ceff);
         padding: 0.5em 1em;
         display: flex;
         justify-content: space-between;
@@ -38,6 +56,7 @@
         gap: 0.5em;
         border-radius: 0.5em;
         margin-top: 1em;
+        max-width: 180px;
     }
     .jumbotronContainer{
         /* border: 1px solid black; */
@@ -49,16 +68,33 @@
         padding: 0;
         margin: 0;
         margin-bottom: 5em;
-        margin-top: 2em;
+        margin-top: 3em;
+        background-color: var(--platinum);
+        padding: 4em;
+        z-index: -1;
+    }
+    .jumbotronText{
+        text-align: center;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        position: relative;
+        width: 700px;
+        order: 1;
+        z-index: 2;
     }
     
+    .jumbotronImageContainer{
+        /* border: 1px solid black; */
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
     .jumbotronImage{
-        /* border: 1px solid green; */
-        grid-column: 1/3;
-        grid-row: 1/3;
-
+       
         object-fit: cover;
-
+        /* box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3); */
     }
     .jumbotronCircle{
         transform: rotate(90deg);
@@ -68,17 +104,7 @@
 
     }
     
-    .jumbotronText{
-        text-align: center;
-        margin-top: 1em;
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        justify-content: center;
-        position: relative;
-        width: 700px;
-        order: 1;
-    }
+ 
     .jumbotronText h1{
         font-size: 3rem;
         font-weight: 700;
@@ -122,7 +148,7 @@
         max-width: 400px;
     }
     .headerButton{
-        background-color: var(--secondary);
+        background-color: linear-gradient(225deg, #e6e8e6ff, #ffffffff, #ced0ceff);
         padding: 0.5em 1em;
         display: flex;
         justify-content: space-between;

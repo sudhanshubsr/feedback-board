@@ -22,7 +22,7 @@ const PricingPage = () => {
 
       <div className={styles.upgradeButtonContainer}>
         <div className={styles.upgradeButton}>
-          <button className="bg-gradient-to-br from-[--primary] to-[--primary-light] text-white px-4 py-2 rounded-lg font-bold">
+          <button className="gradient-top-left  text-[--primary] px-4 py-2 rounded-lg font-bold">
             Upgrade to Premium
           </button>
         </div>
@@ -72,8 +72,8 @@ const FeatureItem = ({ text }) => (
 );
 
 const PricingCard = ({ title, description, price, features }) => (
-  <div className="border text-card-foreground  bg-white flex flex-row md:flex-row  rounded-lg shadow-lg overflow-hidden max-w-full mx-auto" data-v0-t="card">
-    <div className="flex-1 p-6 md:p-8 bg-gradient-to-br from-[--secondary] to-[--primary-light] text-white">
+  <div className="border text-card-foreground  bg-[--platinum] flex flex-row md:flex-row  rounded-lg shadow-lg overflow-hidden max-w-full mx-auto" data-v0-t="card">
+    <div className="flex-1 p-6 md:p-8 text-[--primary] gradient-top-left ">
       <h2 className="text-2xl md:text-3xl font-bold">{title}</h2>
       <p className="text-4xl md:text-5xl font-extrabold my-4">{price}</p>
       <p className="text-sm md:text-base opacity-70">{description}</p>

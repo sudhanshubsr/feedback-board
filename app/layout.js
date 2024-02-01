@@ -13,6 +13,7 @@ export default function RootLayout({ children }) {
 
   const pathname = usePathname();
   const isBoardPage = pathname.includes('/board/');
+  const isAccountPage = pathname.includes('/account');
   return (
     <SessionProvider>
         <html lang="en">
@@ -23,7 +24,15 @@ export default function RootLayout({ children }) {
                 {isBoardPage && (
                   <>{children}</>
                 )}
-                {!isBoardPage && (
+                {isAccountPage && !isBoardPage && (
+                  <>
+                  {children}
+                  <div className={styles.mobilenavbar}>
+                      <HomeNavBottom />
+                    </div>
+                  </>
+                )}
+                {!isBoardPage && !isAccountPage &&(
                   <>
                     <MainHeader />
                     {children}

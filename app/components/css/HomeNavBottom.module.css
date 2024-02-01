@@ -1,12 +1,13 @@
 .navbuttonscontainer{
-    background-color: var(--secondary);
+    background: linear-gradient(225deg, #e6e8e6ff, #ffffffff, #ced0ceff);
     display: grid;
     grid-template-columns: repeat(4, 1fr);
     grid-template-rows: repeat(auto, 1fr);
     gap: 3em;
     padding: 1em 1.5em;
     border-radius: 2em;
-    color: var(--primary);
+    box-shadow: 0 0 10px rgba(0,0,0,0.2);
+    color: #514D4A;
     place-items: center;
     max-width: 500px;
 }
@@ -27,8 +28,6 @@
     padding: 0.3em;
   }
 
-
-
 .header{
     grid-column: 1/12;
     grid-row: 1/2;
@@ -36,20 +35,21 @@
     flex-wrap: nowrap;
     justify-content: space-between;
     align-items: center;
-    padding: 1em;
+    padding-left: 1em;
+    padding-right: 1em;
+    /* background-color: var(--platinum); */
+    border-radius: 10px;
 }
 .headerImage{
-    width: 10em;
-}
-.headerAvatarContainer{
-    display: flex;
-    /* position: relative; */
+    width: 12em;
 }
 
 .headerAvatar{
     width: 48px;
     height: 48px;
-    position: relative;
+    border-radius: 50%;
+    background-color: var(--secondary-light);
+    padding: 0.2em;
 }
 
 .signoutpopOver{

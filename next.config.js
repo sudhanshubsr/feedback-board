@@ -17,7 +17,12 @@ const nextConfig = {
           {
             protocol: 'https',
             hostname: 'github.com'
+          },
+          {
+            protocol: 'https',
+            hostname: 'imagesprojects.s3.ap-south-1.amazonaws.com'
           }
+
 
       ]
   },

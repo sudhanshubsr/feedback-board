@@ -6,8 +6,8 @@ const Eclipse = () => {
 <ellipse id="Ellipse 1" cx="105.5" cy="104" rx="105.5" ry="104" fill="url(#paint0_linear_108_325)"/>
 <defs>
 <linearGradient id="paint0_linear_108_325" x1="105.5" y1="1.68063e-06" x2="270.148" y2="223.68" gradientUnits="userSpaceOnUse">
-<stop offset="0.0199606" stopColor="#CCF2DB"/>
-<stop offset="1" stopColor="#287379"/>
+<stop offset="0.0199606" stopColor="#e6e8e6ff"/>
+<stop offset="1" stopColor=""/>
 </linearGradient>
 </defs>
 </svg>

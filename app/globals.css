@@ -12,20 +12,65 @@
 }
 
 :root{
-  --primary: rgba(40, 115, 121, 100);
+  /* --primary: rgba(40, 115, 121, 100);
   --primary-light: rgba(65,172,181, 100);
   --secondary: rgba(204,242,219,100);
-  --secondary-light: rgba(230,250,241,100);
+  --secondary-light: rgba(230,250,241,100); */
   --black: rgba(0,0,0,100);
-  --white: rgba(255,255,255,100);
   --font-large: 2rem;
   --font-medium: 1.5rem;
   --font-small: 1rem;
+  --platinum: hsla(120, 4%, 91%, 1);
+  --primary: hsla(0, 0%, 10%, 1);
+  --secondary: hsla(13, 88%, 55%, 1);
+  --white: hsla(0, 0%, 100%, 1);
+  --secondary-light: hsla(120, 2%, 81%, 1);
 }
+
+.gradient-top {
+  background: linear-gradient(0deg, #e6e8e6ff, #191919ff, #f15025ff, #ffffffff, #ced0ceff);
+}
+
+.gradient-right {
+  background: linear-gradient(90deg, #e6e8e6ff, #191919ff, #f15025ff, #ffffffff, #ced0ceff);
+}
+
+.gradient-bottom {
+  background: linear-gradient(180deg, #e6e8e6ff, #191919ff, #f15025ff, #ffffffff, #ced0ceff);
+}
+
+.gradient-left {
+  background: linear-gradient(270deg, #e6e8e6ff, #191919ff, #f15025ff, #ffffffff, #ced0ceff);
+}
+
+.gradient-top-right {
+  background: linear-gradient(45deg, #e6e8e6ff, #191919ff, #f15025ff, #ffffffff, #ced0ceff);
+}
+
+.gradient-bottom-right {
+  background: linear-gradient(135deg, #e6e8e6ff, #191919ff, #f15025ff, #ffffffff, #ced0ceff);
+}
+
+.gradient-top-left {
+  background: linear-gradient(225deg, #e6e8e6ff, #ffffffff, #ced0ceff);
+}
+
+.gradient-bottom-left {
+  background: linear-gradient(315deg, #e6e8e6ff, #191919ff, #f15025ff, #ffffffff, #ced0ceff);
+}
+
+.gradient-radial {
+  background: radial-gradient(#e6e8e6ff, #191919ff, #f15025ff, #ffffffff, #ced0ceff);
+}
+
+
+/* CSS HSL */
+
+
 
 body{
   font-family: 'Poppins';
-  background-color: var(--secondary-light);
-  background: radial-gradient(circle, rgba(204,242,219,1) 0%, rgba(230,250,241,1) 10%,rgba(255,255,255,1) 100%);
+  background-color: white;
+
 
 }
