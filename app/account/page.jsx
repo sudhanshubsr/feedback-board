@@ -7,13 +7,34 @@ import BoardCard from '../components/BoardCard';
 import HomebuttonIcon from '../components/icons/HomebuttonIcon';
 import BoardbuttonIcon from '../components/icons/BoardbuttonIcon';
 import ProfileCard from '../components/ProfileCard';
+import CreateBoardComponent from '../components/CreateBoardComponent';
+import axios from 'axios';
+import { MdManageAccounts } from "react-icons/md";
 
 const AccountPage = () => {
     const {data:session, status} = useSession();
     const [accountinfoModel, setAccountinfoModel] = useState(false);
- 
-
+    const [boardsData, setBoardsData] = useState([]);
+    const [openShow, setOpenShow] = useState(false);
     const router = useRouter();
+    const handleAddBoardButtonClick = (e) => {
+      e.preventDefault();
+      setOpenShow(true);
+    }
+
+    const getBoardsData = async()=>{
+      try{
+          await axios.get('/api/board').then(res=>{
+            setBoardsData(res.data);
+        })
+      }catch(err){
+        console.log(err);
+      }
+    }
+    useEffect(() => {
+      getBoardsData();
+    },[boardsData]);
+
     useEffect(() => {
         if(status === 'unauthenticated'){
             router.push('/login');
@@ -34,6 +55,7 @@ const AccountPage = () => {
         setAccountinfoModel(false);
     }
    
+
   return (
     
     <>
@@ -52,8 +74,8 @@ const AccountPage = () => {
                 className="flex items-center gap-3 rounded-lg bg-[--primary] px-3 py-2 text-white mb-2"
                 onClick={handleHomeButtonClick}
               >
-                <HomebuttonIcon />
-                Home
+                <MdManageAccounts />
+                Account
               </button>
               <button
                 className="flex items-center gap-3 rounded-lg bg-[--primary] px-3 py-2 text-white "
@@ -77,15 +99,20 @@ const AccountPage = () => {
           </div>
           {!accountinfoModel && (
             <button className="inline-flex items-center justify-center whitespace-nowrap text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 h-9 rounded-md px-3
-            bg-[#0C0A09] hover:bg-[#0C0A01] text-white
-            ">
+            bg-[#0C0A09] hover:bg-[#0C0A01] text-white"
+            onClick={handleAddBoardButtonClick}
+            >
             Add Board
           </button>
           )}
         </header>
         {accountinfoModel && (<ProfileCard />)}
         {!accountinfoModel && (
-            <BoardCard />
+          
+            <BoardCard boards={boardsData} />
+          )}
+        {openShow && (
+        <CreateBoardComponent setOpenShow={setOpenShow} onCreate={getBoardsData}/>
         )}
           </div>
         </div>

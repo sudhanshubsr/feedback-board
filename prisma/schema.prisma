@@ -10,10 +10,11 @@ datasource db {
   url      = env("MONGO_URL")
 }
 
-model Board{
+model Board {
   id          String    @id @default(auto()) @map("_id") @db.ObjectId
-  name        String    @unique
+  name        String    
   adminEmail  String
+  slug        String    @unique
   createdAt   DateTime  @default(now())
   updatedAt   DateTime  @updatedAt
 }
