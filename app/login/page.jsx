@@ -8,6 +8,10 @@ const AccountPage = () => {
   if(status === 'authenticated'){
     router.push('/account');
   }
+  if(status === 'loading'){
+    return <div>Loading...</div>
+  }
+  
 
   const handleGoogleSignin = async(e)=>{
     e.preventDefault();
