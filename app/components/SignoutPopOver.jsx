@@ -9,7 +9,7 @@ const SignoutPopOver = ({setIsOpen, user}) => {
     }
   return (
     <div className="w-full bg-white dark:bg-gray-800 rounded-lg shadow-xl overflow-hidden">
-  <div className="flex items-center gap-4 p-6 bg-[#292524] dark:bg-gray-70">
+    <div className="flex items-center gap-4 p-6 bg-[#292524] dark:bg-gray-70">
  
     <div className="grid gap-0.5 text-sm">
       <div className="font-semibold text-white dark:text-gray-200"><a href='/account'>{user?.name}</a></div>

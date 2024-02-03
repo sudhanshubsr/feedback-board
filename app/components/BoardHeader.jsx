@@ -1,12 +1,13 @@
 import React from 'react'
-import Button from './Button'
+import { BoardInfoContext } from '../utils/getPathname';
 const BoardHeader = ({setSort, searchPhrase, setSearchPhrase, openFeedbackModalForm}) => {
+  const {name:boardName, slug, adminEmail, description:boardDescription} = React.useContext(BoardInfoContext);
   return (
     <>
     <div className="gradient-top-left p-8">
-        <h1 className="font-bold text-xl">VoxBoard</h1>
+        <h1 className="font-bold text-xl">{boardName}</h1>
         <p className="text-opacity-90 text-slate-700">
-          Elevate Your Insights, Unleash Collective Wisdom
+          {boardDescription}
         </p>
       </div>
 

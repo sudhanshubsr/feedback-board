@@ -1,7 +1,6 @@
 'use client'
 import './globals.css'
 import styles from './components/css/HomeNavBottom.module.css'
-
 import HomeNavBottom from './components/HomeNavBottom'
 import { usePathname } from 'next/navigation';
 import Head from 'next/head';

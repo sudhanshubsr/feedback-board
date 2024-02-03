@@ -6,6 +6,7 @@ import { RiHome3Fill } from 'react-icons/ri';
 import { MdOutlineHelpOutline } from 'react-icons/md';
 import { RiAccountCircleLine } from 'react-icons/ri';
 import { useSession } from 'next-auth/react';
+import Link from 'next/link';
 
 const HomeNavBottom = () => {
   const pathname = usePathname(); // Get current path
@@ -21,24 +22,24 @@ const HomeNavBottom = () => {
     <>
       <div className={styles.navbuttonscontainer}>
         <div>
-          <a href='/'>
+          <Link href='/'>
             <RiHome3Fill size={getIconsize('/')} color={getIconColor('/')} />
-          </a>
+          </Link>
         </div>
         <div>
-          <a href='/pricing'>
+          <Link href='/pricing'>
             <MdCurrencyRupee size={getIconsize('/pricing')} color={getIconColor('/pricing')} />
-          </a>
+          </Link>
         </div>
         <div>
-          <a href='/help'>
+          <Link href='/help'>
             <MdOutlineHelpOutline size={getIconsize('/help')}  color={getIconColor('/help')}/>
-          </a>
+          </Link>
         </div>
         <div>
-          <a href={session?.user ? '/account' : '/login'}>
+          <Link href={session?.user ? '/account' : '/login'}>
             <RiAccountCircleLine size={getIconsize('/login')} color={getIconColor('/login')}/>
-          </a>
+          </Link>
         </div>
       </div>
     </>

@@ -40,7 +40,7 @@
 }
 
 .gradient-left {
-  background: linear-gradient(270deg, #e6e8e6ff, #191919ff, #f15025ff, #ffffffff, #ced0ceff);
+  background: linear-gradient(270deg, #191919ff, #f15025ff);
 }
 
 .gradient-top-right {

@@ -12,20 +12,21 @@ import Downvote from './icons/Downvote';
 import { FaRegEdit } from "react-icons/fa";
 import AttachFileComponent from './AttachFileComponent';
 import { LuTrash2 } from "react-icons/lu";
-
-
+import {isBoardAdmin} from '../utils/getPathname';
+import useBoardName from '../utils/getPathname';
 const FeedbackItemPopup = ({ title, description, openShow, votes, id, onVoteChange, uploads, userEmail, onFeedbackUpdate, status, onStatusUpdate}) => {
   
   const [newTitle, setNewTitle] = useState(title);
   const [newDescription, setNewDescription] = useState(description);
   const [newUploads, setNewUploads] = useState(uploads);
-  
   const [isVotesLoading, setIsVotesLoading] = useState(false);
   const [isEditMode, setIsEditMode] = useState(false);
 
   const [newstatus, setNewStatus] = useState(status || 'new'); 
   const { data: session } = useSession();
-  const isAdmin = session?.user?.email === 'sudhanshubsr.dev@gmail.com'
+  const boardName = useBoardName();
+
+  const isAdmin = isBoardAdmin(boardName);
   const iVoted = votes?.some((vote) => vote.userEmail === session?.user?.email);
 
   

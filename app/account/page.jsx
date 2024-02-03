@@ -10,13 +10,21 @@ import ProfileCard from '../components/ProfileCard';
 import CreateBoardComponent from '../components/CreateBoardComponent';
 import axios from 'axios';
 import { MdManageAccounts } from "react-icons/md";
-
+import { signOut } from 'next-auth/react'
+import SignoutPopOver from '../components/SignoutPopOver';
 const AccountPage = () => {
     const {data:session, status} = useSession();
     const [accountinfoModel, setAccountinfoModel] = useState(false);
     const [boardsData, setBoardsData] = useState([]);
     const [openShow, setOpenShow] = useState(false);
     const router = useRouter();
+    const [dropDownOpen, setDropDownOpen] = useState(false);
+    
+    const user = session?.user;
+    
+    const handleDropDownClick = () => {
+      setDropDownOpen(!dropDownOpen);
+    }
     const handleAddBoardButtonClick = (e) => {
       e.preventDefault();
       setOpenShow(true);
@@ -54,7 +62,9 @@ const AccountPage = () => {
     const handleBoardButtonClick = () => {
         setAccountinfoModel(false);
     }
-   
+    const handleSignOut = async()=>{
+      await signOut({callbackUrl: "/login"});
+    }
 
   return (
     
@@ -98,15 +108,26 @@ const AccountPage = () => {
             <h1 className="font-semibold text-lg">{accountinfoModel ? 'Account Info' : 'Boards'}</h1>
           </div>
           {!accountinfoModel && (
+            <>
             <button className="inline-flex items-center justify-center whitespace-nowrap text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 h-9 rounded-md px-3
             bg-[#0C0A09] hover:bg-[#0C0A01] text-white"
             onClick={handleAddBoardButtonClick}
             >
             Add Board
           </button>
+          <div>
+            <img type="button" onClick={handleDropDownClick} className="w-[48px] h-[48px] rounded-full cursor-pointer" src={user?.image} alt="User dropdown" />
+          </div>
+
+          {dropDownOpen && (
+            <div className=' absolute right-[20px] top-[60px] z-30'>
+            <SignoutPopOver user={user} setIsOpen={setDropDownOpen} />
+            </div>
+          )}
+            </>
           )}
         </header>
-        {accountinfoModel && (<ProfileCard />)}
+        {accountinfoModel && (<ProfileCard user={user} handleSignOut={handleSignOut}/>)}
         {!accountinfoModel && (
           
             <BoardCard boards={boardsData} />

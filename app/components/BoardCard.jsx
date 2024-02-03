@@ -22,7 +22,7 @@ const BoardCard = ({boards}) => {
                     </tr>
                   </thead>
                   {boards.map((board, index)=>(
-                    <BoardTable key={index} boardName={board.name} boardCreationDate={board.createdAt} />
+                    <BoardTable key={index} boardName={board.name} boardCreationDate={new Date (board.createdAt).toDateString()} slug={board.slug} />
                   ))}
                   
                 </table>

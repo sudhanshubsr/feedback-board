@@ -37,7 +37,8 @@ const MainHeader = () => {
             <img src="https://imagesprojects.s3.ap-south-1.amazonaws.com/VoxboardNewLogo.png" alt='log'/>
           </a>
         </div>
-        <div className={styles.headerAvatarContainer}>
+        {session  && (
+          <div className={styles.headerAvatarContainer}>
           <div className={styles.headerAvatar}>
             <button onClick={handleAvatarClick}>
               <Avatar url={userAvatar} />
@@ -49,6 +50,7 @@ const MainHeader = () => {
             </div>
           )}
         </div>
+        )}
       </div>
     </>
   );

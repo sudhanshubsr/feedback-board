@@ -1,17 +1,18 @@
 import React from 'react';
 import {signOut} from 'next-auth/react';
 
-const AccountInfoCard = () => {
-  const handleSignout = async()=>{
+const AccountInfoCard = ({user}) => {
+
+  const handleSignout = async () => {
     await signOut({callbackUrl: '/login'});
   }
   return (
     <div className="flex flex-col items-center gap-6 p-6">
-      <div className="rounded-full w-24 h-24 border-4 border-gray-200 dark:border-gray-800 flex items-center justify-center bg-muted">
-        <span className="text-xl font-bold">JD</span>
+      <div className="rounded-full w-24 h-24 border-4 border-gray-200 dark:border-gray-800 flex items-center justify-center bg-muted overflow-hidden object-cover">
+        <span className="text-xl font-bold"><img src={user?.image} /></span>
       </div>
-      <h2 className="text-2xl font-bold">John Doe</h2>
-      <div className="text-sm text-gray-500 dark:text-gray-400">johndoe@example.com</div>
+      <h2 className="text-2xl font-bold">{user?.name}</h2>
+      <div className="text-sm text-gray-500 dark:text-gray-400">{user?.email}</div>
       <div className="flex items-center gap-2">
         <svg
           xmlns="http://www.w3.org/2000/svg"

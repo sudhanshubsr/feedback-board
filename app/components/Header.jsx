@@ -1,48 +1,57 @@
-// 'use client' is not a recognized syntax, assuming it's a comment
-
 import React from 'react';
 import { useState } from 'react';
 import { useSession } from 'next-auth/react';
 import { signIn, signOut } from 'next-auth/react';
-import LoginPopup from './LoginPopup';
-import Button from './Button';
-import Login from './icons/Login';
-import Logout from './icons/Logout';
+import BoardPillPopup from './BoardPillPopup';
 
 const Header = () => {
   const { data: session } = useSession();
-  const [showLoginPopup, setShowLoginPopup] = useState(false); // State variable to control the visibility of the login popup
+  const [showLoginPopup, setShowLoginPopup] = useState(false);
+  const [dropDownOpen, setDropDownOpen] = useState(false);
+  const user = session?.user;
+  console.log(user)
+  const firstName = user?.name.split(' ')[0];
 
-  // Function to handle user logout
-  function logout() {
-    signOut();
-  }
 
-  // Function to handle user login
   function login() {
-    setShowLoginPopup(true);
+    setShowLoginPopup(!showLoginPopup);
   }
 
+  function toggleDropDown() {
+    console.log('toggleDropDown');
+    setDropDownOpen(!dropDownOpen);
+  }
   return (
-    <div className='max-w-2xl mx-auto text-right mt-2 mb-2 sm:mb-2 sm:mt-2 flex items-center justify-end'>
-      {session && (
-        <>
-          Hello, {session.user.name || session.user.email}
-          <Button className='ml-4 shadow-md shadow-gray-400  px-3 bg-red-500 text-white' onClick={logout}>
-            Logout <Logout />
-          </Button>
-        </>
-      )}
-      {!session && (
-        <>
-          <Button className='ml-4 shadow-sm shadow-gray-400 px-3 bg-blue-500 text-white' onClick={login}>
-            Login <Login />
-          </Button>
-        </>
-      )}
-      {showLoginPopup && <LoginPopup setShowLoginPopup={setShowLoginPopup} />}
-    </div>
-  );
+    <>
+      <div className='max-w-2xl mx-auto text-right mt-4 mb-2 sm:mb-2 sm:mt-2 flex items-center justify-end py-2 px-2'>
+          <div className='relative'>
+            {session && (
+              <div className='flex items-center gap-2 bg-[--platinum] rounded-3xl pl-2 w-40 border-2 mb-2 ml-10'>
+              <div className='text-[-primary]'>
+                {firstName}
+              </div>
+              <div>
+                <img type="button" onClick={toggleDropDown} className="w-[48px] h-[48px] rounded-full cursor-pointer" 
+                src={user.image} alt="User dropdown" />
+              </div>
+            </div>
+            )}
+            {!session && (
+              <div>
+              <img type="button" onClick={showLoginPopup} className="w-[48px] h-[48px] rounded-full cursor-pointer" src="https://github.com/shadcn.png" alt="User dropdown" />
+            </div>
+            )}
+            {dropDownOpen && (
+              <div className='absolute right-[-10px]  bg-[--primary] rounded-2xl'>
+              <BoardPillPopup user={user} />
+            </div>
+            )}
+          </div>
+        </div>
+        
+      </>
+        
+  )
 };
 
 export default Header;
