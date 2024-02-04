@@ -1,6 +1,7 @@
 import { getServerSession } from "next-auth";
 import prisma from "../../../prisma/index.js";
 import { authOptions } from "../../utils/auth.js";
+import { canWeaccessthisBoard } from "../../utils/boardApiFunctions.js";
 
 export async function POST(request) {
   const jsonbody = await request.json();
@@ -28,7 +29,7 @@ export async function POST(request) {
 export async function GET(request) {
   // Create a new URL object from the request URL
   const url = new URL(request.url);
-
+  const session = await getServerSession(authOptions);
   // Check if a feedbackId parameter is present in the URL
   if (url.searchParams.get("feedbackId")) {
     // If feedbackId is present, fetch the specific feedback from the database
@@ -47,7 +48,14 @@ export async function GET(request) {
     const searchPhrase = url.searchParams.get("search");
     const sort = url.searchParams.get("sort");
     const boardName = url.searchParams.get("boardName");
-
+    const board = await prisma.board.findUnique({
+      where: {
+        slug: boardName,
+      },
+    });
+    if (!canWeaccessthisBoard(board, session?.user?.email)) {
+      return Response.json({ error: "Unauthorized" }, { status: 401 });
+    }
     // Initialize an empty filter object
     let filter = { boardName };
 
@@ -112,20 +120,17 @@ export async function GET(request) {
 //       }
 //     });
 //     const boardName = feedbackDoc.boardName;
-    
+
 //     const isAdmin = !!(await prisma.board.findFirst({
 //       where:{
 //         name: boardName,
 //         adminEmail: session.user.email
 //       }
 //     }))
-  
+
 //   if (!isAdmin) {
 //     return Response.unauthorized();
 //   }
-
-
-
 
 //   const filter = { id: feedbackId };
 //   const updateData = {};
@@ -148,7 +153,8 @@ export async function GET(request) {
 
 export async function PUT(request) {
   const jsonbody = await request.json();
-  const { feedbackId, title, description, uploads, userEmail, status } = jsonbody;
+  const { feedbackId, title, description, uploads, userEmail, status } =
+    jsonbody;
 
   // Assuming authOptions is defined somewhere
   const session = await getServerSession(authOptions);
@@ -174,7 +180,6 @@ export async function PUT(request) {
       adminEmail: session.user.email,
     },
   }));
-  
 
   if (!isAdmin) {
     return Response.unauthorized();
@@ -197,7 +202,7 @@ export async function PUT(request) {
 
     return Response.json(updatedFeedbackDoc);
   } catch (error) {
-    console.error(error);  // Log any potential errors during update
+    console.error(error); // Log any potential errors during update
     return Response.internalServerError();
   }
 }

@@ -1,9 +1,19 @@
+'use client'
+
 import React from 'react';
 import styles from '../components/css/PricingCard.module.css';
 import Eclipse from '../components/icons/Eclipse';
 import EclipseSmallBalls from '../components/icons/EclipseSmallBalls';
+import axios from 'axios';
 
 const PricingPage = () => {
+
+  const handleUpgradeButtonClick = (e) => {
+    e.preventDefault();
+    axios.post('/api/subscription').then((response) => {
+      window.location.href = response.data;
+    });
+  }
   return (
     <section className="my-16 flex-col justify-center items-center">
       <h1 className="text-center text-4xl mb-8 font-bold">Simple Pricing</h1>
@@ -22,8 +32,10 @@ const PricingPage = () => {
 
       <div className={styles.upgradeButtonContainer}>
         <div className={styles.upgradeButton}>
-          <button className="gradient-top-left  text-[--primary] px-4 py-2 rounded-lg font-bold">
-            Upgrade to Premium
+          <button 
+          onClick={handleUpgradeButtonClick}  
+          className="gradient-top-left  text-[--primary] px-4 py-2 rounded-lg font-bold">
+          Upgrade to Premium
           </button>
         </div>
       </div>

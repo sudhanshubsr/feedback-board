@@ -1,17 +1,17 @@
 import React from 'react';
 import Button from './Button';
 import AttachFileComponent from './AttachFileComponent';
-import { useState } from 'react';
+import { useState, useContext} from 'react';
 import axios from 'axios';
 import { useSession } from 'next-auth/react';
 import Attachment from './Attachment';
 import LoginPopup from './LoginPopup';
-
+import { BoardInfoContext } from '../utils/getPathname';
 const FeedbackItemPopupCommentsForm = ({ feedbackId, onCommentCreate }) => {
   const [commentText, setCommentText] = useState('');
   const [uploads, setUploads] = useState([]);
   const [showLoginPopup, setShowLoginPopup] = useState(false);
-
+  const {archived} = useContext(BoardInfoContext);
   const { data: session } = useSession();
   const userEmail = session?.user?.email;
 
@@ -57,8 +57,11 @@ const FeedbackItemPopupCommentsForm = ({ feedbackId, onCommentCreate }) => {
   return (
     <form>
       {showLoginPopup && <LoginPopup setShowLoginPopup={setShowLoginPopup} />}
-      {/* Textarea for entering comments */}
-      <textarea
+      
+      {archived && <p className='text-center text-gray-500'>Comments are disabled for archived feedback</p>}
+      {!archived && (
+        <>
+        <textarea
         className='border rounded-md w-full p-2'
         placeholder='Let us know what you think...'
         value={commentText}
@@ -83,6 +86,8 @@ const FeedbackItemPopupCommentsForm = ({ feedbackId, onCommentCreate }) => {
           {session ? 'Comment' : 'Login and Comment'}
         </Button>
       </div>
+        </>
+      )}
       
     </form>
   );

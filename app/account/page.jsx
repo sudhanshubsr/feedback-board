@@ -4,7 +4,6 @@ import { useSession } from 'next-auth/react'
 import { useEffect, useState} from 'react'
 import { useRouter } from 'next/navigation';
 import BoardCard from '../components/BoardCard';
-import HomebuttonIcon from '../components/icons/HomebuttonIcon';
 import BoardbuttonIcon from '../components/icons/BoardbuttonIcon';
 import ProfileCard from '../components/ProfileCard';
 import CreateBoardComponent from '../components/CreateBoardComponent';
@@ -130,7 +129,7 @@ const AccountPage = () => {
         {accountinfoModel && (<ProfileCard user={user} handleSignOut={handleSignOut}/>)}
         {!accountinfoModel && (
           
-            <BoardCard boards={boardsData} />
+            <BoardCard boards={boardsData} onUpdate={getBoardsData}/>
           )}
         {openShow && (
         <CreateBoardComponent setOpenShow={setOpenShow} onCreate={getBoardsData}/>

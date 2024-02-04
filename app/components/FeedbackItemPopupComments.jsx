@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useContext } from 'react';
 import Avatar from './Avatar';
 import FeedbackItemPopupCommentsForm from './FeedbackItemPopupCommentsForm';
 import axios from 'axios';
@@ -6,7 +6,7 @@ import Attachment from './Attachment';
 import TimeAgo from 'timeago-react';
 import { useSession } from 'next-auth/react';
 import AttachFileComponent from './AttachFileComponent';
-
+import { BoardInfoContext } from '../utils/getPathname';
 const FeedbackItemPopupComments = ({ feedbackId }) => {
   
   const {data: session} = useSession();
@@ -15,6 +15,7 @@ const FeedbackItemPopupComments = ({ feedbackId }) => {
   const [isEditMode, setIsEditMode] = useState(null);
   const [newCommentText, setNewCommentText] = useState('');
   const [newCommentUploads, setNewCommentUploads] = useState([]);
+  const {archived} = useContext(BoardInfoContext);
   // const [newComment, setNewComment] = useState(comments); // eslint-disable-line no-unused-vars
 
   // Function to fetch comments for the given feedbackId
@@ -83,6 +84,7 @@ const FeedbackItemPopupComments = ({ feedbackId }) => {
 
   return (
     <div className='p-8'>
+      {comments.length === 0 &&  <p className='text-gray-500 text-center'>No comments yet</p>}
       {comments.length > 0 &&
         comments.map((comment) => {
           const commentToBeEdit = isEditMode?.id === comment.id;
@@ -111,7 +113,7 @@ const FeedbackItemPopupComments = ({ feedbackId }) => {
                       <span className='cursor-pointer ml-1 text-sm ' onClick={handleEditedCommentSave}>Save</span>
                     </>
                   )}
-                  {!commentToBeEdit && (
+                  {!commentToBeEdit && !archived && (
                     <>
                       {(session?.user?.email === comment.userEmail) && (<span className='cursor-pointer ml-2' onClick={() => handleCommentEditMode(comment)}>Edit</span>)}
                     </>

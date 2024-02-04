@@ -3,7 +3,7 @@ import Popup from './Popup';
 import Button from './Button';
 import FeedbackItemPopupComments from './FeedbackItemPopupComments';
 import axios from 'axios';
-import { useState } from 'react';
+import { useState, useContext } from 'react';
 import { MoonLoader } from 'react-spinners';
 import { useSession } from 'next-auth/react';
 import Attachment from './Attachment';
@@ -14,6 +14,7 @@ import AttachFileComponent from './AttachFileComponent';
 import { LuTrash2 } from "react-icons/lu";
 import {isBoardAdmin} from '../utils/getPathname';
 import useBoardName from '../utils/getPathname';
+import { BoardInfoContext } from '../utils/getPathname';
 const FeedbackItemPopup = ({ title, description, openShow, votes, id, onVoteChange, uploads, userEmail, onFeedbackUpdate, status, onStatusUpdate}) => {
   
   const [newTitle, setNewTitle] = useState(title);
@@ -29,6 +30,7 @@ const FeedbackItemPopup = ({ title, description, openShow, votes, id, onVoteChan
   const isAdmin = isBoardAdmin(boardName);
   const iVoted = votes?.some((vote) => vote.userEmail === session?.user?.email);
 
+  const {archived} = useContext(BoardInfoContext);
   
 
   // 
@@ -144,7 +146,7 @@ const FeedbackItemPopup = ({ title, description, openShow, votes, id, onVoteChan
 
         <div className='flex justify-end px-8 py-2 border-b border-gray-300 mt-6'>
         
-        {!isEditMode && (
+        {!isEditMode && !archived && (
           <>
           {session?.user?.email === userEmail && (
             <Button onClick={handleFeedbackEdit}>
@@ -155,7 +157,7 @@ const FeedbackItemPopup = ({ title, description, openShow, votes, id, onVoteChan
           </>
         )}
         
-        {!isEditMode && isAdmin && (
+        {!isEditMode && isAdmin &&  (
           
           <select
           onChange={(ev) => setNewStatus(ev.target.value)}
@@ -184,7 +186,7 @@ const FeedbackItemPopup = ({ title, description, openShow, votes, id, onVoteChan
             <MoonLoader size={20} color={"#000"} loading={isVotesLoading} />
         )}
 
-        {!isVotesLoading && (
+        {!isVotesLoading && !archived && (
         <Button
           primary={iVoted ? 'true' : ""}
           onClick={handleVoteClick}
@@ -207,13 +209,18 @@ const FeedbackItemPopup = ({ title, description, openShow, votes, id, onVoteChan
         )}  
          
         
-        
-
-          
         </div>
-        {!isEditMode && (<div>
+        {!isEditMode && 
+        (
+        
+        <>
+
+        
+        <div>
           <FeedbackItemPopupComments feedbackId={id} />
-        </div>)}
+        </div>
+        </>
+        )}
         
       </div>
     </Popup>

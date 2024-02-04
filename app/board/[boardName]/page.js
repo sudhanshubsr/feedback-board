@@ -3,16 +3,19 @@ import { SessionProvider } from "next-auth/react";
 import Board from "../../../app/components/Board.jsx";
 import React from 'react'
 import Header from '../../../app/components/Header.jsx'
-import { BoardInforProvider } from "../../utils/getPathname.js";
+import { BoardInfoProvider } from "../../utils/getPathname.js";
 
 
 export default function Home(){
+
+  
+
   return (
     <SessionProvider>
-      <BoardInforProvider>
+      <BoardInfoProvider>
         <Header />
         <Board />
-      </BoardInforProvider>
+      </BoardInfoProvider>
     </SessionProvider>
   )
 }

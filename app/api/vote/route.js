@@ -1,6 +1,7 @@
 import { getServerSession } from "next-auth";
 import prisma from "../../../prisma/index.js";
 import { authOptions } from "../../utils/auth.js";
+import { canWeaccessthisBoard } from "../../utils/boardApiFunctions.js";
 
 
 
@@ -33,9 +34,20 @@ export async function POST(request) {
     const { feedbackId } = jsonBody;
     const session = await getServerSession(authOptions);
     const { email: userEmail } = session.user;
-    // console.log("userEmail", userEmail)
-    // console.log(session)
 
+    const feedbackDoc = await prisma.feedback.findUnique({
+      where: {
+        id: feedbackId,
+      },
+    });
+    const boardDoc = await prisma.board.findFirst({
+      where: {
+        slug: feedbackDoc.boardName
+      }
+    })
+    if (!canWeaccessthisBoard(boardDoc, userEmail)) {
+      return Response.json({ error: "Unauthorized" }, { status: 401 });
+    }
     //check if user has already voted
     const vote = await prisma.vote.findFirst({
       where: {

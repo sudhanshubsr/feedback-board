@@ -1,7 +1,7 @@
 import React from 'react'
 import { BoardInfoContext } from '../utils/getPathname';
 const BoardHeader = ({setSort, searchPhrase, setSearchPhrase, openFeedbackModalForm}) => {
-  const {name:boardName, slug, adminEmail, description:boardDescription} = React.useContext(BoardInfoContext);
+  const {name:boardName, slug, adminEmail,archived, description:boardDescription} = React.useContext(BoardInfoContext);
   return (
     <>
     <div className="gradient-top-left p-8">
@@ -36,12 +36,14 @@ const BoardHeader = ({setSort, searchPhrase, setSearchPhrase, openFeedbackModalF
         </div>
         <div className="grow"></div>
         {/* Button to open the feedback modal form */}
-        <button
+        {!archived && (
+          <button
           onClick={openFeedbackModalForm}
           className="bg-[--primary] py-2 px-4 rounded-md text-white text-opacity-90"
         >
           Make a Suggestion
         </button>
+        )}
       </div>
 
     </>

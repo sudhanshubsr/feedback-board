@@ -22,7 +22,7 @@ export default function Popup({ setShow, children, title, narrow }) {
               </svg>
             </button>
             {!!title && (
-              <h2 className="py-4 text-center border-b">
+              <h2 className="py-4 text-center border-b text-3xl">
                 {title}
               </h2>
             )}

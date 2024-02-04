@@ -16,6 +16,9 @@ model Board {
   adminEmail  String
   slug        String    @unique
   description String
+  visibility  String    @default("public")
+  archived    Boolean   @default(false)
+  allowedEmails String[] 
   createdAt   DateTime  @default(now())
   updatedAt   DateTime  @updatedAt
 }

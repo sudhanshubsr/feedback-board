@@ -11,7 +11,8 @@ import getPathname from "../utils/getPathname";
 import { feedbackOpenNeeded, fetchFeedback, postLoginActions } from "../utils/boardHelperFunc";
 import BoardHeader from "./BoardHeader";
 import { BoardBody } from "./BoardBody";
-
+import { BoardInfoContext } from "../utils/getPathname";
+import { useContext } from "react";
 export default function Board() {
   const [showFeedbackModalForm, setShowFeedbackModalForm] = useState(false);
   const [openFeedbackModal, setOpenFeedbackModal] = useState(false);
@@ -27,7 +28,6 @@ export default function Board() {
   const pathname = usePathname();
   const {data: session} = useSession();
   const boardName = getPathname();
-
 
  // ! I got a issue here, as I am using debounced version of getFeedbacks function, it is not updating the sort value in the api call instaneously, it is taking the previous value of sort, so I am using useRef to store the value of sort and then using it in the api call to get the updated value of sort, this is a temporary solution, I will try to find a better solution for this
 
@@ -122,6 +122,7 @@ export default function Board() {
 
   return (
     <main className="bg-white md:max-w-2xl mx-auto md:shadow-lg md:rounded -lg md:mt-8 overflow-hidden mb-3">
+      
       <BoardHeader openFeedbackModalForm={openFeedbackModalForm} setSort={setSort} setSearchPhrase={setSearchPhrase} searchPhrase={searchPhrase} />
       
       <BoardBody feedbacks={feedbacks} votes={votes} openFeedbackItem={openFeedbackItem} getVotes={getVotes} fetchingFeedbacks={fetchingFeedbacks}/>
