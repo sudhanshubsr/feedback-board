@@ -11,17 +11,18 @@ datasource db {
 }
 
 model Board {
-  id          String    @id @default(auto()) @map("_id") @db.ObjectId
-  name        String    
-  adminEmail  String
-  slug        String    @unique
-  description String
-  visibility  String    @default("public")
-  archived    Boolean   @default(false)
-  allowedEmails String[] 
-  createdAt   DateTime  @default(now())
-  updatedAt   DateTime  @updatedAt
+  id            String   @id @default(auto()) @map("_id") @db.ObjectId
+  name          String
+  adminEmail    String
+  slug          String   @unique
+  description   String
+  visibility    String   @default("public")
+  archived      Boolean  @default(false)
+  allowedEmails String[]
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
 }
+
 model Feedback {
   id          String    @id @default(auto()) @map("_id") @db.ObjectId
   title       String
@@ -33,8 +34,9 @@ model Feedback {
   updatedAt   DateTime  @updatedAt
   comments    Comment[]
   votes       Vote[]
+  notifications Notification[]
   voteCount   Int       @default(0)
-  boardName  String
+  boardName   String
 }
 
 model Vote {
@@ -58,6 +60,23 @@ model Comment {
   user       User?    @relation(fields: [userEmail], references: [email])
   createdAt  DateTime @default(now())
   updatedAt  DateTime @updatedAt
+}
+
+enum NotificationType {
+  vote
+  comment
+}
+
+model Notification {
+  id                   String   @id @default(auto()) @map("_id") @db.ObjectId
+  destinationUserEmail String
+  sourceUserName       String
+  type                 NotificationType
+  read                 Boolean  @default(false)
+  feedbackId           String   @db.ObjectId 
+  Feedback             Feedback @relation(fields: [feedbackId], references: [id])
+  createdAt            DateTime @default(now())
+  updatedAt            DateTime @updatedAt
 }
 
 model User {

@@ -3,7 +3,13 @@ import prisma from "../../../prisma/index.js";
 import { authOptions } from "../../utils/auth.js";
 export async function POST(req) {
   const jsonbody = await req.json();
+  const session = await getServerSession(authOptions);
   const { text, feedbackId, uploads, userEmail } = jsonbody;
+  const feedback = await prisma.feedback.findUnique({
+    where:{
+      id:feedbackId
+    }
+  })
   await prisma.comment.create({
     data: {
       text,
@@ -11,6 +17,14 @@ export async function POST(req) {
       feedbackId,
       uploads,
     },
+  });
+  await prisma.notification.create({
+    data:{
+      destinationUserEmail:feedback.userEmail,
+      sourceUserName: session.user.name,
+      type:'comment',
+      feedbackId: feedbackId,
+    }
   });
   return Response.json({
     data: {

@@ -73,6 +73,15 @@ export async function POST(request) {
           userEmail,
         },
       });
+
+      await prisma.notification.create({
+        data: {
+          destinationUserEmail: feedbackDoc.userEmail,
+          sourceUserName: session.user.name,
+          type: "vote",
+          feedbackId: feedbackId,
+        },
+      });
       await getVoteCount(feedbackId);
       return Response.json(voteDoc);
     }

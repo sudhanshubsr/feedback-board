@@ -1,9 +1,11 @@
+/* eslint-disable @next/next/no-img-element */
 import React, { useEffect } from 'react';
 import { useState } from 'react';
 import { useSession } from 'next-auth/react';
 import BoardPillPopup from './BoardPillPopup';
 import { useContext } from 'react';
 import { BoardInfoContext } from '../utils/getPathname';
+import NotificationButton from './NotificationModalComponent';
 const Header = () => {
   const { data: session } = useSession();
   const [dropDownOpen, setDropDownOpen] = useState(false);
@@ -33,7 +35,9 @@ const Header = () => {
       </>
         )}
           <div className='relative'>
+            
             {session && (
+              <div className='flex items-center gap-4'>
               <div className='flex items-center gap-2 bg-[--platinum] rounded-3xl pl-2 w-40 border-2 mb-2 ml-10'>
               <div className='text-[-primary]'>
                 {firstName}
@@ -42,6 +46,8 @@ const Header = () => {
                 <img type="button" onClick={toggleDropDown} className="w-[48px] h-[48px] rounded-full cursor-pointer" 
                 src={user?.image} alt="User dropdown" />
               </div>
+            </div>
+            <NotificationButton />
             </div>
             )}
             {!session && (
