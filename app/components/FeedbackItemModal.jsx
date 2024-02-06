@@ -13,7 +13,7 @@ import { FaRegEdit } from "react-icons/fa";
 import AttachFileComponent from './AttachFileComponent';
 import { LuTrash2 } from "react-icons/lu";
 import {isBoardAdmin} from '../utils/getPathname';
-import useBoardName from '../utils/getPathname';
+import useBoardSlug from '../utils/getPathname';
 import { BoardInfoContext } from '../utils/getPathname';
 const FeedbackItemPopup = ({ title, description, openShow, votes, id, onVoteChange, uploads, userEmail, onFeedbackUpdate, status, onStatusUpdate}) => {
   
@@ -25,9 +25,9 @@ const FeedbackItemPopup = ({ title, description, openShow, votes, id, onVoteChan
 
   const [newstatus, setNewStatus] = useState(status || 'new'); 
   const { data: session } = useSession();
-  const boardName = useBoardName();
+  const boardSlug = useBoardSlug();
 
-  const isAdmin = isBoardAdmin(boardName);
+  const isAdmin = isBoardAdmin(boardSlug);
   const iVoted = votes?.some((vote) => vote.userEmail === session?.user?.email);
 
   const {archived} = useContext(BoardInfoContext);

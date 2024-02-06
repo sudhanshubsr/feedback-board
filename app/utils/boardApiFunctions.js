@@ -1,3 +1,7 @@
+'use client'
+import axios from 'axios';
+import { useEffect, useState } from 'react';
+
 export function canWeaccessthisBoard(boardDoc, userEmail){
     if(boardDoc.visibility === "public"){
         return true;
@@ -8,3 +12,4 @@ export function canWeaccessthisBoard(boardDoc, userEmail){
     return false;
 
 }
+

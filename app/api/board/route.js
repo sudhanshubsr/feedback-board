@@ -24,7 +24,21 @@ export async function GET(req) {
       return Response.json(board);
     }
     else{
-     
+      try{
+      if(url.searchParams.get('sharedEmail')){
+        const sharedboards = await prisma.board.findMany({
+          where:{
+            allowedEmails: {
+              has: url.searchParams.get('sharedEmail')
+            }
+          }
+        })
+        return Response.json(sharedboards);
+      }
+    }catch(error){
+        console.error("Error fetching shared boards:", error);
+        return Response.json({ error: "Internal Server Error" }, { status: 500 });
+      }
       const boards = await prisma.board.findMany({
         where: {
           adminEmail: adminEmail,

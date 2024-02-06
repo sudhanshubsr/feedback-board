@@ -11,14 +11,20 @@ import axios from 'axios';
 import { MdManageAccounts } from "react-icons/md";
 import { signOut } from 'next-auth/react'
 import SignoutPopOver from '../components/SignoutPopOver';
+
+
+
 const AccountPage = () => {
+    const [isPremium, setIsPremium] = useState(null);
     const {data:session, status} = useSession();
     const [accountinfoModel, setAccountinfoModel] = useState(false);
+    const [sharedBoardModel, setSharedBoardModel] = useState(false);
+    const [boardModel, setBoardModel] = useState(true);
     const [boardsData, setBoardsData] = useState([]);
+    const [sharedboardsData, setSharedBoardsData] = useState([]); 
     const [openShow, setOpenShow] = useState(false);
     const router = useRouter();
     const [dropDownOpen, setDropDownOpen] = useState(false);
-    
     const user = session?.user;
     
     const handleDropDownClick = () => {
@@ -29,6 +35,28 @@ const AccountPage = () => {
       setOpenShow(true);
     }
 
+    useEffect(() => {
+      axios.get('/api/subscription')
+        .then(res => {
+          setIsPremium(res.data?.stripeSubscriptionData?.object?.status === 'active');
+        })
+        .catch(err => {
+          console.log(err);
+          if (err.response.status === 401) {
+          }
+        });
+    }, []);
+  
+    const getSharedBoardsData = async()=>{
+      try{
+        const res = await axios.get(`/api/board/?sharedEmail=${session?.user?.email}`)
+        const sharedboards = res.data.filter(boards=> boards.adminEmail !== session?.user?.email);
+        setSharedBoardsData(sharedboards)
+      }
+      catch(err){
+        console.log(err);
+      }
+    }
     const getBoardsData = async()=>{
       try{
           await axios.get('/api/board').then(res=>{
@@ -43,6 +71,10 @@ const AccountPage = () => {
     },[boardsData]);
 
     useEffect(() => {
+      getSharedBoardsData();
+    },[session?.user?.email, sharedboardsData]);
+
+    useEffect(() => {
         if(status === 'unauthenticated'){
             router.push('/login');
         }
@@ -55,14 +87,24 @@ const AccountPage = () => {
         return <div>Unauthenticated</div>
     }
 
+    const cancreateboard = isPremium || boardsData.length < 1;
     const handleHomeButtonClick = () => {
         setAccountinfoModel(true);
     }
     const handleBoardButtonClick = () => {
         setAccountinfoModel(false);
+        setSharedBoardModel(false);
+        setBoardModel(true);
     }
     const handleSignOut = async()=>{
       await signOut({callbackUrl: "/login"});
+    }
+
+    const handleSharedBoardButtonClick = () => {
+      setSharedBoardModel(true);
+      setBoardModel(false);
+      setAccountinfoModel(false);
+
     }
 
   return (
@@ -87,11 +129,19 @@ const AccountPage = () => {
                 Account
               </button>
               <button
-                className="flex items-center gap-3 rounded-lg bg-[--primary] px-3 py-2 text-white "
+                className="flex items-center gap-3 rounded-lg bg-[--primary] px-3 py-2 text-white mb-2 "
                 onClick={handleBoardButtonClick}
               >
                 <BoardbuttonIcon />
-                Boards
+                Your Boards
+              </button>
+
+              <button
+                className="flex items-center gap-3 rounded-lg bg-[--primary] px-3 py-2 text-white "
+                onClick={handleSharedBoardButtonClick}
+              >
+                <BoardbuttonIcon />
+                Shared Boards
               </button>
             </nav>
            
@@ -108,12 +158,14 @@ const AccountPage = () => {
           </div>
           {!accountinfoModel && (
             <>
-            <button className="inline-flex items-center justify-center whitespace-nowrap text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 h-9 rounded-md px-3
-            bg-[#0C0A09] hover:bg-[#0C0A01] text-white"
-            onClick={handleAddBoardButtonClick}
-            >
-            Add Board
-          </button>
+            {cancreateboard && (
+              <button className="inline-flex items-center justify-center whitespace-nowrap text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 h-9 rounded-md px-3
+              bg-[#0C0A09] hover:bg-[#0C0A01] text-white"
+              onClick={handleAddBoardButtonClick}
+              >
+              Add Board
+            </button>
+            )}
           <div>
             <img type="button" onClick={handleDropDownClick} className="w-[48px] h-[48px] rounded-full cursor-pointer" src={user?.image} alt="User dropdown" />
           </div>
@@ -126,13 +178,44 @@ const AccountPage = () => {
             </>
           )}
         </header>
+
+
+        {/* Account Info */}
         {accountinfoModel && (<ProfileCard user={user} handleSignOut={handleSignOut}/>)}
-        {!accountinfoModel && (
-          
-            <BoardCard boards={boardsData} onUpdate={getBoardsData}/>
+
+        {/* Your Boards */}
+        {!accountinfoModel && boardModel &&(
+          <>
+          <BoardCard boards={boardsData} onUpdate={getBoardsData}/>
+             {boardsData.length === 0 && (
+              <div className="flex items-center justify-center h-full">
+                <h1 className="text-2xl font-semibold text-gray-500">No Boards Found</h1>
+              </div>
+            
+            )}
+            
+            </>
           )}
+          
+           
+
+        {/* Shared Boards */}
+        {!accountinfoModel && sharedBoardModel && !boardModel &&(
+ 
+            <>
+            <BoardCard boards={sharedboardsData} onUpdate={getBoardsData}/>
+            {sharedboardsData.length === 0 && (
+              <div className="flex items-center justify-center h-full">
+                <h1 className="text-2xl font-semibold text-gray-500">No Boards Found</h1>
+              </div>
+            )}
+
+            </>
+        )}
+
+
         {openShow && (
-        <CreateBoardComponent setOpenShow={setOpenShow} onCreate={getBoardsData}/>
+        <CreateBoardComponent setOpenShow={setOpenShow} onCreate={getSharedBoardsData}/>
         )}
           </div>
         </div>

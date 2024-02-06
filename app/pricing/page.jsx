@@ -5,8 +5,10 @@ import styles from '../components/css/PricingCard.module.css';
 import Eclipse from '../components/icons/Eclipse';
 import EclipseSmallBalls from '../components/icons/EclipseSmallBalls';
 import axios from 'axios';
+import { useEffect } from 'react';
 
 const PricingPage = () => {
+  const [isPremium, setIsPremium] = React.useState(null);
 
   const handleUpgradeButtonClick = (e) => {
     e.preventDefault();
@@ -14,6 +16,27 @@ const PricingPage = () => {
       window.location.href = response.data;
     });
   }
+
+  const handleManagesubscriptionButtonClick = (e) => {
+    e.preventDefault();
+    axios.post('/api/portal').then((response) => {
+      window.location.href = response.data;
+    });
+  }
+
+  useEffect(() => {
+    axios.get('/api/subscription')
+      .then(res => {
+        setIsPremium(res.data?.stripeSubscriptionData?.object?.status === 'active');
+      })
+      .catch(err => {
+        console.log(err);
+        if (err.response.status === 401) {
+        }
+      });
+  }, []);
+
+
   return (
     <section className="my-16 flex-col justify-center items-center">
       <h1 className="text-center text-4xl mb-8 font-bold">Simple Pricing</h1>
@@ -32,11 +55,20 @@ const PricingPage = () => {
 
       <div className={styles.upgradeButtonContainer}>
         <div className={styles.upgradeButton}>
-          <button 
-          onClick={handleUpgradeButtonClick}  
-          className="gradient-top-left  text-[--primary] px-4 py-2 rounded-lg font-bold">
-          Upgrade to Premium
-          </button>
+          {!isPremium && (
+            <button 
+            onClick={handleUpgradeButtonClick}  
+            className="gradient-top-left  text-[--primary] px-4 py-2 rounded-lg font-bold">
+            Upgrade to Premium
+            </button>
+          )}
+          {isPremium && (
+            <button 
+            onClick={handleManagesubscriptionButtonClick}  
+            className="gradient-top-left  text-[--primary] px-4 py-2 rounded-lg font-bold">
+            Manage Subscription
+            </button>
+          )}
         </div>
       </div>
 

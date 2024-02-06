@@ -12,9 +12,9 @@ const useBoardSlug = () => {
   return boardSlug;
 };
 
-export async function isBoardAdmin(boardName) {
+export async function isBoardAdmin(boardSlug) {
   const res = await axios.get("/api/board");
-  return !!res.data.find((board) => board.name === boardName);
+  return !!res.data.find((board) => board.name === boardSlug);
 }
 
 export async function getBoardName(boardSlug) {

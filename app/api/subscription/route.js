@@ -17,16 +17,29 @@ export async function POST(req) {
     cancel_url: process.env.NEXTAUTH_URL + "/subscription?cancel=1",
     metadata: {
       userEmail: usersession?.user?.email,
-      address: "IN",
     },
     subscription_data: {
       metadata: {
         userEmail: usersession?.user?.email,
-        
-
+      },
     },
-  },
   });
-
   return Response.json(stripesession.url);
+}
+
+export async function GET(req) {
+  const session = await getServerSession(authOptions);
+  if (!session) {
+    return new Response("Unauthorized", { status: 401 });
+  }
+  try {
+    const subscription = await prisma.subscription.findFirst({
+      where: {
+        userEmail: session?.user?.email,
+      },
+    });
+    return Response.json(subscription);
+  } catch (e) {
+    console.log(e);
+  }
 }

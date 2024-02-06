@@ -24,7 +24,7 @@ const BoardTable = ({boardName, boardCreationDate, slug, boardId, boardDescripti
       <tbody className="[&amp;_tr:last-child]:border-0">
                     <tr className="border-b transition-colors hover:bg-muted/50 data-[state=selected]:bg-muted">
                       
-                      <td className="p-4 align-middle font-medium ">{boardName ? boardName : 'Board'}</td>
+                      <td className="p-4 align-middle font-bold text-md ">{boardName ? boardName : 'Board'}</td>
                       <td className={"p-4 align-middle font-medium"}>
                        {archived ?  <span className='bg-[--secondary] px-3 py-1 rounded '>{archived ? 'Archived!' : null}</span> : null}
                         </td>

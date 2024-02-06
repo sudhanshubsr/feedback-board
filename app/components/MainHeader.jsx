@@ -9,7 +9,7 @@ const MainHeader = () => {
   const router = useRouter();
   const { data: session, status } = useSession();
   const user = session?.user;
-  const [userAvatar, setUserAvatar] = useState(user?.image || 'https://imagesprojects.s3.ap-south-1.amazonaws.com/account.png');
+  const [userAvatar, setUserAvatar] = useState(user?.image);
   const [isOpen, setIsOpen] = useState(false);
 
   const handleAvatarClick = () => {
