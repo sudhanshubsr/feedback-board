@@ -8,25 +8,25 @@ const BoardPillPopup = ({setIsOpen, user}) => {
     }
   return (
     <>
-    <div class="px-4 py-4 text-sm text-white">
+    <div className="px-4 py-4 text-sm text-white">
       <div>{user?.name}</div>
       {/* <div>{user?.email}</div> */}
     </div>
-    <ul class="py-2 text-sm text-white" aria-labelledby="avatarButton">
+    <ul className="py-2 text-sm text-white" aria-labelledby="avatarButton">
       <li>
-        <Link href="/account" class="block px-4 py-2 hover:bg-gray-100  hover:text-black">Dashboard</Link>
+        <Link href="/account" className="block px-4 py-2 hover:bg-gray-100  hover:text-black">Dashboard</Link>
       </li>
 
       {/* <li>
-        <Link href='/account' class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 hover:text-black">Notification</Link>
+        <Link href='/account' className="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 hover:text-black">Notification</Link>
       </li> */}
       <li>
-        <Link href='/account' class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 hover:text-black">Account</Link>
+        <Link href='/account' className="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 hover:text-black">Account</Link>
       </li>
       
     </ul>
-    <div class="py-1">
-      <a onClick={handleSignoutButtonClick} class="block px-4 py-2 text-sm text-white hover:bg-gray-100 hover:text-black cursor-pointer ">Sign out</a>
+    <div className="py-1">
+      <a onClick={handleSignoutButtonClick} className="block px-4 py-2 text-sm text-white hover:bg-gray-100 hover:text-black cursor-pointer ">Sign out</a>
     </div>
     </>
   )
