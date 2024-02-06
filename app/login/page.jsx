@@ -2,6 +2,7 @@
 import React from 'react';
 import { signIn, useSession } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
+import { FaGithub } from "react-icons/fa6";
 const AccountPage = () => {
   const {data:session, status} = useSession();
   const router = useRouter();
@@ -17,6 +18,10 @@ const AccountPage = () => {
     e.preventDefault();
     await signIn("google", {callbackUrl: "/account"});
   }
+  const handleGithubSignin = async(e)=>{
+    e.preventDefault();
+    await signIn("github", {callbackUrl: "/account"});
+  }
   return (
     <>
 
@@ -26,9 +31,10 @@ const AccountPage = () => {
               <form className="flex flex-col w-full h-full pb-6 text-center bg-transparent rounded-3xl">
                 <h3 className="mb-3 text-4xl mt-28 md:mt-5 font-extrabold text-[--primary]">Sign In</h3>
                 <p className="mb-4 text-grey-700">Enter your email to get Started</p>
-                <button onClick={handleGoogleSignin} className="flex items-center justify-center w-full py-4 mb-6 text-sm font-medium transition duration-300 rounded-2xl text-grey-900 bg-grey-300 hover:bg-grey-400  cursor-pointer">
-                  <img className="h-5 mr-2" src="https://raw.githubusercontent.com/Loopple/loopple-public-assets/main/motion-tailwind/img/logos/logo-google.png" alt="Google"/>
-                  Sign in with Google
+                <button onClick={handleGithubSignin} className="flex items-center justify-center w-full py-4 mb-6 text-sm font-medium transition duration-300 rounded-2xl text-grey-900 bg-grey-300 hover:bg-grey-400  cursor-pointer">
+                  {/* <img className="h-5 mr-2" src="https://raw.githubusercontent.com/Loopple/loopple-public-assets/main/motion-tailwind/img/logos/logo-google.png" alt="Google"/> */}
+                  <FaGithub className="h-6  w-6 mr-2" />
+                  Sign in with Github
                 </button>
                 <div className="flex items-center mb-3">
                   <hr className="h-0 border-b border-solid border-grey-500 grow" />
