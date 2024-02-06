@@ -49,7 +49,7 @@ export function BoardInfoProvider({ children }) {
           setIsLoaded(true);
         });
     }
-  }, [boardName]);
+  }, [boardName,boardSlug]);
 
   if (!isLoaded) {
     return (

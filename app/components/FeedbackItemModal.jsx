@@ -41,7 +41,7 @@ const FeedbackItemPopup = ({ title, description, openShow, votes, id, onVoteChan
     axios.put(`/api/feedback`,{feedbackId:id, title, description, uploads, userEmail, status:newstatus}).then(()=>{
      onFeedbackUpdate({status:newstatus});
     })
-  },[newstatus]);
+  },[status, id, newstatus, onFeedbackUpdate, title, description, uploads, userEmail]);
 
   // Function to handle Vote Functionality
   const handleVoteClick = async () => {

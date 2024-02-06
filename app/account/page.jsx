@@ -68,11 +68,10 @@ const AccountPage = () => {
     }
     useEffect(() => {
       getBoardsData();
+      getSharedBoardsData();
     },[boardsData]);
 
-    useEffect(() => {
-      getSharedBoardsData();
-    },[session?.user?.email, sharedboardsData]);
+   
 
     useEffect(() => {
         if(status === 'unauthenticated'){
