@@ -12,7 +12,7 @@ export default function HelpPage() {
       <div className="px-3 flex flex-col items-center">
         <FaqQuestion question="Can I cancel my subscription anytime?">
           <p className="max-w-[700px]">Yes, you can downgrade in your account page.</p>
-        </FaqQuestion>
+        </FaqQuestion>  
         <FaqQuestion question="Can I use the free version forever?">
           Yes
         </FaqQuestion>

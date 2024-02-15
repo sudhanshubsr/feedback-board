@@ -49,6 +49,6 @@ const AttachFileComponent = ({ onUploadFile }) => {
       <input onChange={handleUploadFileonChange} multiple type="file" className="hidden" />
     </label>
   );
-};
+};      
 
 export default AttachFileComponent;
