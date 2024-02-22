@@ -60,7 +60,7 @@ export default function Home(){
             </div>
           </div>
       </div>
-      <section className="py-10 px-6 w-full mb-32">
+      <section className="py-10 px-6 w-full mb-20">
       <div className="max-w-7xl mx-auto grid gap-10 md:grid-cols-2 lg:grid-cols-3 ">
         <div className="rounded-lg border bg-card text-card-foreground shadow-sm gradient-top-left">
           <div className="p-6 flex flex-col items-center text-center">
@@ -134,27 +134,23 @@ export default function Home(){
       </div>
     </section>
 
-    <section className="w-full py-8 md:py-8 lg:py-12 bg-[--platinum] dark:bg-gray-800 mb-10">
-      <div className="container grid items-center gap-6 px-4 md:px-10 lg:grid-cols-2 lg:gap-10">
-        <div className="space-y-3 w-[36em]">
-          <h2 className="text-3xl font-bold tracking-tighter md:text-4xl/tight">
-            Experience the efficiency of top-tier teams by managing with our Feedback-boards.
-          </h2>
-          <p className="max-w-[600px] text-gray-500 md:text-xl/relaxed lg:text-base/relaxed xl:text-xl/relaxed dark:text-gray-400">
-          Unleash your team's potential, shifting the focus from infrastructure to delivering impactful features.
-          </p>
-        </div>
-        <div className="mx-auto w-full max-w-sm space-y-2">
-              <form className="flex space-x-2">
-                <input className="max-w-lg flex-1 focus:border-none" value={email} placeholder="Enter your email" type="email" onChange={(e)=>setEmail(e.target.value)}/>
-                <button type="submit" className='bg-[--primary] text-white p-2 rounded' onClick={handleNewsLetterButtonClick}> Sign Up</button>
-              </form>
-              <p className="text-xs text-gray-500 dark:text-gray-400">
-                {emailsent ? "Thank you for signing up!" : "Sign up for our beta and get early access to our product."}
-              </p>
-            </div>
-      </div>
-    </section>
+
+  <section className={styles.section}>
+  <div className={styles.container}>
+    <div className={styles.content}>
+      <h2 className={styles.heading}>Experience the efficiency of top-tier teams by managing with our Feedback-boards.</h2>
+      <p className={styles.paragraph}>Unleash your team's potential, shifting the focus from infrastructure to delivering impactful features.</p>
+    </div>
+    <div className={styles.form}>
+      <form className={styles.flex}>
+        <input className={styles.input} value={email} placeholder="Enter your email" type="email" onChange={(e) => setEmail(e.target.value)} />
+        <button type="submit" className={styles.button} onClick={handleNewsLetterButtonClick}>Sign Up</button>
+      </form>
+      <p className={styles.info}>{emailsent ? "Thank you for signing up!" : "Sign up for our beta and get early access to our product."}</p>
+    </div>
+  </div>
+</section>
+
       </main>
 
   )

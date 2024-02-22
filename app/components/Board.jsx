@@ -1,18 +1,16 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 
 import axios from "axios";
-import { useSession } from "next-auth/react";
-import { useEffect, useState, useRef } from "react";
 import { debounce } from "lodash";
+import { useSession } from "next-auth/react";
 import { usePathname } from "next/navigation";
+import { useEffect, useRef, useState } from "react";
+import { feedbackOpenNeeded, fetchFeedback, postLoginActions } from "../utils/boardHelperFunc";
+import getPathname from "../utils/getPathname";
+import { BoardBody } from "./BoardBody";
+import BoardHeader from "./BoardHeader";
 import FeedbackItemModal from "./FeedbackItemModal";
 import FeedbackModal from "./FeedbackModal";
-import getPathname from "../utils/getPathname";
-import { feedbackOpenNeeded, fetchFeedback, postLoginActions } from "../utils/boardHelperFunc";
-import BoardHeader from "./BoardHeader";
-import { BoardBody } from "./BoardBody";
-import { BoardInfoContext } from "../utils/getPathname";
-import { useContext } from "react";
 export default function Board() {
   const [showFeedbackModalForm, setShowFeedbackModalForm] = useState(false);
   const [openFeedbackModal, setOpenFeedbackModal] = useState(false);

@@ -15,6 +15,8 @@ import { LuTrash2 } from "react-icons/lu";
 import {isBoardAdmin} from '../utils/getPathname';
 import useBoardSlug from '../utils/getPathname';
 import { BoardInfoContext } from '../utils/getPathname';
+
+
 const FeedbackItemPopup = ({ title, description, openShow, votes, id, onVoteChange, uploads, userEmail, onFeedbackUpdate, status, onStatusUpdate}) => {
   
   const [newTitle, setNewTitle] = useState(title);

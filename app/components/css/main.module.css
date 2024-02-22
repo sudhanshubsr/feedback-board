@@ -1,4 +1,4 @@
-@media (min-width:768px){
+@media (min-width:769px){
     .maincontainer{
         display: flex;
         flex-direction: column;
@@ -118,10 +118,83 @@
         max-width: 400px;
         font-weight: 580;;
     }
+
+
+    .section {
+        width: 100%;
+        padding: 3rem 0;
+        background-color: var(--platinum);
+        color: #000; /* Set your desired text color */
+        margin-bottom: 10px;
+      }
+      
+      .container {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 6px;
+        padding: 0 1rem;
+      }
+      
+      .content {
+        display: flex;
+        flex-direction: column;
+        gap: 1.5rem;
+        max-width: 36em;
+      }
+      
+      .heading {
+        font-size: 2rem;
+        font-weight: bold;
+        letter-spacing: -0.02em;
+      }
+      
+      .paragraph {
+        max-width: 600px;
+        font-size: 1rem;
+        color: #888; /* Set your desired text color */
+      }
+      
+      .form {
+        margin: auto;
+        display: flex;
+        flex-direction: column;
+        gap: 0.5rem;
+      }
+      
+      .flex {
+        display: flex;
+        gap: 0.5rem;
+        /* border: 2px solid black; */
+      }
+      
+      .input {
+        flex: 1;
+        border: none;
+        border-radius: 0.25rem;
+        outline: none;
+        width: 300px;
+      }
+      
+      .button {
+        background-color: var(--primary);
+        color: white;
+        padding: 0.5rem 1rem;
+        border-radius: 0.25rem;
+        cursor: pointer;
+      }
+      
+      .info {
+        font-size: 0.75rem;
+        color: #888; /* Set your desired text color */
+      }
+      
+
+
+
 }
 
 
-  @media (max-width: 690px) {
+  @media (max-width: 768px) {
     .maincontainer{
         display: flex;
         flex-direction: column;
@@ -147,8 +220,15 @@
         text-align: center;
         max-width: 400px;
     }
+
+    .jumbotron{
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+    }
     .headerButton{
-        background-color: linear-gradient(225deg, #e6e8e6ff, #ffffffff, #ced0ceff);
+        background: linear-gradient(225deg, #e6e8e6ff, #ffffffff, #ced0ceff);
         padding: 0.5em 1em;
         display: flex;
         justify-content: space-between;
@@ -156,8 +236,10 @@
         gap: 0.5em;
         border-radius: 0.5em;
         margin-top: 1em;
-        max-width: 200px;
+        max-width: 180px;
+        margin-bottom: 2em;
     }
+    
     .jumbotronContainer{
         display: flex;
         flex-direction: column;
@@ -191,6 +273,79 @@
         right: 0;
         top: 12em;
     }
+
+
+    .section {
+        width: 100%;
+        padding: 3rem 0;
+        background-color: var(--platinum);
+        color: #000; /* Set your desired text color */
+        margin-bottom: 4.5rem;
+
+      }
+      
+      .container {
+        display: flex;
+        flex-direction: column;
+        padding: 0 1rem;
+        text-align: center;
+      }
+      
+      .content {
+        display: flex;
+        flex-direction: column;
+        gap: 1.5rem;
+        max-width: 36em;
+      }
+      
+      .heading {
+        font-size: 2rem;
+        font-weight: bold;
+        letter-spacing: -0.02em;
+      }
+      
+      .paragraph {
+        max-width: 600px;
+        font-size: 1rem;
+        color: #888; /* Set your desired text color */
+      }
+      
+      .form {
+        margin: auto;
+        display: flex;
+        flex-direction: column;
+        gap: 0.5rem;
+        margin-top: 4rem;
+      }
+      
+      .flex {
+        display: flex;
+        gap: 0.5rem;
+        /* border: 2px solid black; */
+      }
+      
+      .input {
+        flex: 1;
+        border: none;
+        border-radius: 0.25rem;
+        outline: none;
+        width: 300px;
+      }
+      
+      .button {
+        background-color: var(--primary);
+        color: white;
+        padding: 0.5rem 1rem;
+        border-radius: 0.25rem;
+        cursor: pointer;
+      }
+      
+      .info {
+        font-size: 0.75rem;
+        color: #888; /* Set your desired text color */
+      }
+
+
 
 }
 

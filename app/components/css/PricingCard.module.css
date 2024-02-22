@@ -52,3 +52,25 @@
        
     }
 }
+
+
+@media screen and (max-width: 768px) {
+    .pricingCardContainer{
+        margin-bottom: 6em;
+
+    }
+    .pricingCard{
+        flex-direction: column;
+        gap: 10px;
+        max-width: 410px;
+    }
+    .pricingCardStyle{
+        position: absolute;
+        display: block;
+        z-index: -1;
+        bottom: -70px;
+        right: 0;
+       
+    }
+    
+}
