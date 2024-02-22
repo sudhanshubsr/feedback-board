@@ -81,7 +81,7 @@ const PricingPage = () => {
           <PricingCard
             title="Free Forever"
             description="Just the basics"
-            price="$0.0"
+            price="0.0"
             features={[
               '1 board',
               'Single sign-on',
@@ -93,7 +93,7 @@ const PricingPage = () => {
           <PricingCard
             title="Premium"
             description="More control and insights"
-            price="$19.9"
+            price="1,999"
             features={[
               'Everything in Free',
               'Unlimited boards',
