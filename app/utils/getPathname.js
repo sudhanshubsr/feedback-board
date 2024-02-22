@@ -7,7 +7,8 @@ import { MoonLoader } from "react-spinners";
 
 const useBoardSlug = () => {
   const pathname = usePathname();
-  const result = /^\/board\/([a-z0-9\-]+)\/?.*/.exec(pathname);
+  const result = /^\/board\/([a-z0-9\-]+)/i.exec(pathname);
+  // console.log("result",result);
   const boardSlug = result ? result[1] : null;
   return boardSlug;
 };
@@ -31,6 +32,7 @@ export function BoardInfoProvider({ children }) {
   const [isLoaded, setIsLoaded] = useState(false);
   const [Unauthorized, setUnauthorized] = useState(false);
   const [archived, setArchived] = useState(false);
+
   useEffect(() => {
     if (boardName) {
       axios

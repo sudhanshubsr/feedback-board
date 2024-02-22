@@ -4,10 +4,30 @@ import { HiMiniArrowLongRight } from "react-icons/hi2";
 import styles from './components/css/main.module.css'
 import Eclipse from "./components/icons/Eclipse";
 import Link  from "next/link"
+import axios from 'axios';
+import { useState } from 'react';
+
 export default function Home(){
+
+  const [emailsent, setEmailSent] = useState(false);
+  const [email, setEmail] = useState('');
   const handleNewsLetterButtonClick = (e) => {
     e.preventDefault();
+    axios.post('/api/newsletter', {email: email}).then((res)=>{
+      setEmailSent(true);
+      setEmail('');
+      console.log(res.data);
+    }).catch((e)=>{
+      console.log(e);   
+    })
   }
+
+  if(emailsent){
+    setTimeout(()=>{
+      setEmailSent(false);
+    }, 4000)
+  }
+  
   return (
       <main className={styles.maincontainer}>
 
@@ -26,7 +46,7 @@ export default function Home(){
         </div>
         <div className={styles.jumbotronImageContainer}>
               <div className={styles.jumbotronImage}>
-                <img src="https://imagesprojects.s3.ap-south-1.amazonaws.com/VoxboardNewImage1.png" alt='MainImage' />
+                <img src="https://imagesprojects.s3.ap-south-1.amazonaws.com/voxboard/VoxboardNewImage1.png" alt='MainImage' />
               </div>      
         </div>
       </div>
@@ -126,11 +146,11 @@ export default function Home(){
         </div>
         <div className="mx-auto w-full max-w-sm space-y-2">
               <form className="flex space-x-2">
-                <input className="max-w-lg flex-1 focus:border-none  " placeholder="Enter your email" type="email" />
+                <input className="max-w-lg flex-1 focus:border-none" value={email} placeholder="Enter your email" type="email" onChange={(e)=>setEmail(e.target.value)}/>
                 <button type="submit" className='bg-[--primary] text-white p-2 rounded' onClick={handleNewsLetterButtonClick}> Sign Up</button>
               </form>
               <p className="text-xs text-gray-500 dark:text-gray-400">
-                Sign up for our beta and get early access to our product.
+                {emailsent ? "Thank you for signing up!" : "Sign up for our beta and get early access to our product."}
               </p>
             </div>
       </div>

@@ -6,6 +6,7 @@ import { FaGithub } from "react-icons/fa6";
 const AccountPage = () => {
   const {data:session, status} = useSession();
   const router = useRouter();
+  
   if(status === 'authenticated'){
     router.push('/account');
   }
@@ -41,11 +42,15 @@ const AccountPage = () => {
                   <p className="mx-4 text-grey-600">or</p>
                   <hr className="h-0 border-b border-solid border-grey-500 grow" />
                 </div>
-                <label htmlFor="email" className="mb-2 text-sm text-start text-grey-900">Email*</label>
+                {/* <label htmlFor="email" className="mb-2 text-sm text-start text-grey-900">Email*</label>
                 <input id="email" type="email" placeholder="
                 Enter your Email" className="flex items-center md:w-full px-5 py-4 mr-2 text-sm font-medium outline-none focus:outline-none mb-7 placeholder:text-grey-700 bg-grey-200 text-dark-grey-900 rounded-2xl"/>
           
-                <button className="w-96 px-6 py-5 mb-5 text-sm font-bold leading-none text-white transition duration-300 md:w-96 rounded-2xl bg-[--primary] ">Login With Email</button>
+                <button className="w-96 px-6 py-5 mb-5 text-sm font-bold leading-none text-white transition duration-300 md:w-96 rounded-2xl bg-[--primary] ">Login With Email</button> */}
+                <button onClick={handleGoogleSignin} className="flex items-center justify-center w-full py-4 mb-6 text-sm font-medium transition duration-300 rounded-2xl text-grey-900 bg-grey-300 hover:bg-grey-400  cursor-pointer">
+                  <img className="h-5 mr-2" src="https://raw.githubusercontent.com/Loopple/loopple-public-assets/main/motion-tailwind/img/logos/logo-google.png" alt="Google"/>
+                  Sign in with Google
+                </button>
               </form>
             </div>
           </div>

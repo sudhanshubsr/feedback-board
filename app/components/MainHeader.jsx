@@ -1,10 +1,9 @@
-import React, { useEffect, useState } from 'react';
-import Avatar from './Avatar';
-import styles from '../components/css/HomeNavBottom.module.css';
 import { useSession } from 'next-auth/react';
-import SignoutPopOver from './SignoutPopOver';
 import { useRouter } from 'next/navigation';
-import NotificationButton from './NotificationModalComponent';
+import React, { useEffect, useState } from 'react';
+import styles from '../components/css/HomeNavBottom.module.css';
+import Avatar from './Avatar';
+import SignoutPopOver from './SignoutPopOver';
 const MainHeader = () => {
   const router = useRouter();
   const { data: session, status } = useSession();
@@ -34,7 +33,7 @@ const MainHeader = () => {
       <div className={styles.header}>
         <div className={styles.headerImage}>
           <a href="/">
-            <img src="https://imagesprojects.s3.ap-south-1.amazonaws.com/VoxboardNewLogo.png" alt='log'/>
+            <img src="https://imagesprojects.s3.ap-south-1.amazonaws.com/voxboard/VoxboardNewLogo.png" alt='log'/>
           </a>
         </div>
         {session  && (

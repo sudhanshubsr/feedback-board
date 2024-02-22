@@ -44,15 +44,15 @@ const NotificationButton = () => {
 
   return (
     <>
-        <button classNameName='relative' onClick={handleNotificationModal}>
+        <button className="relative inline-flex items-center  text-sm font-medium text-center text-black " onClick={handleNotificationModal}>
            {unreadnotifications.length >0 && (
-                <div classNameName='absolute top-[-6px] right-[-12px] bg-red-500 text-sm px-1 rounded-full'>{unreadnotifications.length}</div>
+                <div class="absolute inline-flex items-center justify-center w-6 h-6 text-xs font-bold text-white bg-red-500 border-2 border-white rounded-full -top-2 -end-2 dark:border-gray-900">{unreadnotifications.length}</div>
            )} 
             <NotificationBell />
         </button>
         {showNotifications && (
             <>
-                <div className="rounded-lg border absolute shadow-sm  max-w-xs top-[55px] right-[-40px] bg-[--primary] text-white">
+                <div className="rounded-lg border absolute shadow-sm  max-w-xs top-[60px] right-[0px] bg-[--primary] text-white">
   <div className="flex flex-col space-y-1.5 p-6">
     <h3 className="text-2xl font-semibold text-center whitespace-nowrap leading-none tracking-tight">Notifications</h3>
   </div>
@@ -72,8 +72,9 @@ const NotificationButton = () => {
                     <TimeAgo datetime={n.createdAt} />
                 </p>
             </div>
-            
+            <hr></hr>
         </div>
+
     ))
 )}
   </div>
